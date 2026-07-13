@@ -34,7 +34,6 @@ import { MenuItemRowLabel as MenuItemRowLabel_da1bbd5f4fb87c0eeb310d853b5b944c }
 import { Icon as Icon_534076e2c753ea5d539a54b05f456b1b } from '@/components/admin/Icon'
 import { Logo as Logo_a44df17d0fc3dcd873dae43dc3bf66bd } from '@/components/admin/Logo'
 import { IframeBridge as IframeBridge_811fa622de5d15f0ff8b98c7c76e90bc } from '~/payload/components/iframe-bridge'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CustomLoginView as CustomLoginView_21ca3cc3077cf6353ee4cbc273638aa8 } from '@/components/CustomLoginView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
@@ -76,7 +75,6 @@ export const importMap = {
   "@/components/admin/Icon#Icon": Icon_534076e2c753ea5d539a54b05f456b1b,
   "@/components/admin/Logo#Logo": Logo_a44df17d0fc3dcd873dae43dc3bf66bd,
   "~/payload/components/iframe-bridge#IframeBridge": IframeBridge_811fa622de5d15f0ff8b98c7c76e90bc,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@/components/CustomLoginView#CustomLoginView": CustomLoginView_21ca3cc3077cf6353ee4cbc273638aa8,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

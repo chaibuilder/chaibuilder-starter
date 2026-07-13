@@ -14,11 +14,9 @@ import { Users } from './collections/Users'
 import { Faqs } from './collections/Faqs'
 import { Testimonials } from './collections/Testimonials'
 import { SiteConfig } from './collections/SiteConfig'
-import { s3Storage } from '@payloadcms/storage-s3'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 
 import { getAdminRoute } from '@/utilities/adminRoute'
-import { getAppStoragePrefix } from '@/utilities/getAppStoragePrefix'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -121,23 +119,6 @@ export default buildConfig({
       generateTitle: ({ doc }) => doc?.title || doc?.name || '',
       generateDescription: ({ doc }) => doc?.excerpt || doc?.tagline || doc?.title || '',
       tabbedUI: true,
-    }),
-    s3Storage({
-      collections: {
-        media: {
-          prefix: `${getAppStoragePrefix()}/`,
-        },
-      },
-      bucket: process.env.BUCKET_NAME as string,
-      config: {
-        credentials: {
-          accessKeyId: process.env.ACCESS_KEY_ID as string,
-          secretAccessKey: process.env.SECRET_ACCESS_KEY as string,
-        },
-        region: process.env.REGION as string,
-        endpoint: process.env.ENDPOINT as string,
-        forcePathStyle: true,
-      },
     }),
   ],
 })

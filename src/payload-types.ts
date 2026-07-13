@@ -71,19 +71,11 @@ export interface Config {
     blog: Blog;
     'blog-categories': BlogCategory;
     legal: Legal;
-    'faq-categories': FaqCategory;
     faqs: Faq;
     testimonials: Testimonial;
-    menus: Menu;
     media: Media;
     'site-config': SiteConfig;
-    'pro-domains': ProDomain;
-    'pro-licenses': ProLicense;
-    'pro-activations': ProActivation;
-    'pro-versions': ProVersion;
-    'pro-validate-log': ProValidateLog;
-    'pro-webhook-events': ProWebhookEvent;
-    'pro-payments': ProPayment;
+    menus: Menu;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -95,19 +87,11 @@ export interface Config {
     blog: BlogSelect<false> | BlogSelect<true>;
     'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
-    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
-    menus: MenusSelect<false> | MenusSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
-    'pro-domains': ProDomainsSelect<false> | ProDomainsSelect<true>;
-    'pro-licenses': ProLicensesSelect<false> | ProLicensesSelect<true>;
-    'pro-activations': ProActivationsSelect<false> | ProActivationsSelect<true>;
-    'pro-versions': ProVersionsSelect<false> | ProVersionsSelect<true>;
-    'pro-validate-log': ProValidateLogSelect<false> | ProValidateLogSelect<true>;
-    'pro-webhook-events': ProWebhookEventsSelect<false> | ProWebhookEventsSelect<true>;
-    'pro-payments': ProPaymentsSelect<false> | ProPaymentsSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -227,7 +211,6 @@ export interface Media {
   alt: string;
   deletedAt?: string | null;
   deletedBy?: string | null;
-  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -292,18 +275,6 @@ export interface Legal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faq-categories".
- */
-export interface FaqCategory {
-  id: string;
-  app: string;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs".
  */
 export interface Faq {
@@ -325,7 +296,6 @@ export interface Faq {
     };
     [k: string]: unknown;
   } | null;
-  category: string | FaqCategory;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -344,6 +314,54 @@ export interface Testimonial {
   avatar?: (string | null) | Media;
   rating?: number | null;
   socialLink?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This is site config data available on all pages. To be used with data binding.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-config".
+ */
+export interface SiteConfig {
+  id: string;
+  app: string;
+  name: string;
+  tagline: string;
+  logo?: (string | null) | Media;
+  favicon?: (string | null) | Media;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  physicalAddress?: {
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zip?: string | null;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    location?: [number, number] | null;
+  };
+  socialLinks?:
+    | {
+        platform: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  privacyPolicyPage?: string | null;
+  termsOfServicesPage?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -394,263 +412,6 @@ export interface Menu {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * This is site config data available on all pages. To be used with data binding.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-config".
- */
-export interface SiteConfig {
-  id: string;
-  name: string;
-  tagline: string;
-  logo?: (string | null) | Media;
-  favicon?: (string | null) | Media;
-  contactEmail?: string | null;
-  contactPhone?: string | null;
-  physicalAddress?: {
-    addressLine1?: string | null;
-    addressLine2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    zip?: string | null;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    location?: [number, number] | null;
-  };
-  socialLinks?:
-    | {
-        platform: string;
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  privacyPolicyPage?: string | null;
-  termsOfServicesPage?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-  };
-  app: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-domains".
- */
-export interface ProDomain {
-  id: string;
-  domain: string;
-  trialStartedAt: string;
-  trialEndsAt: string;
-  firstSeenAt: string;
-  lastSeenAt: string;
-  lastIp?: string | null;
-  lastVersion?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-licenses".
- */
-export interface ProLicense {
-  id: string;
-  licenseKey?: string | null;
-  status: 'active' | 'revoked';
-  /**
-   * Perpetual licensing: versions released after this date are version_blocked. Empty = unlimited updates.
-   */
-  updatesUntil?: string | null;
-  /**
-   * Subscription expiry. Empty = perpetual (never time-expires).
-   */
-  expiresAt?: string | null;
-  /**
-   * Seat limit (number of domains). 9999 = effectively unlimited.
-   */
-  maxDomains: number;
-  /**
-   * When on, the builder may show a custom logo instead of ChaiBuilder branding.
-   */
-  whiteLabel?: boolean | null;
-  /**
-   * Owning customer. One user can hold many licenses.
-   */
-  user?: (string | null) | User;
-  provider: 'manual' | 'dodo' | 'paddle' | 'stripe';
-  /**
-   * Internal plan id (e.g. starter/agency/lifetime).
-   */
-  planKey?: string | null;
-  providerCustomerId?: string | null;
-  providerSubscriptionId?: string | null;
-  providerPaymentId?: string | null;
-  buyerEmail?: string | null;
-  notes?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-activations".
- */
-export interface ProActivation {
-  id: string;
-  license: string | ProLicense;
-  domain: string;
-  activatedAt: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Add a row on EVERY chaipro release. Version gating + the changelog page depend on it.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-versions".
- */
-export interface ProVersion {
-  id: string;
-  version: string;
-  releasedAt: string;
-  /**
-   * Optional headline, e.g. 'AI editing improvements'.
-   */
-  title?: string | null;
-  /**
-   * Shown on the public changelog. Empty = version listed date-only.
-   */
-  releaseNotes?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Untick to hide from the changelog (still used for version gating).
-   */
-  published?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-validate-log".
- */
-export interface ProValidateLog {
-  id: string;
-  domain: string;
-  licenseKey?: string | null;
-  version?: string | null;
-  statusReturned: string;
-  ip?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-webhook-events".
- */
-export interface ProWebhookEvent {
-  id: string;
-  provider: 'dodo' | 'paddle' | 'stripe';
-  eventId: string;
-  eventType: string;
-  status: 'received' | 'processed' | 'skipped' | 'failed';
-  license?: (string | null) | ProLicense;
-  /**
-   * Informational outcome for processed/skipped events.
-   */
-  note?: string | null;
-  error?: string | null;
-  /**
-   * Raw provider body for forensics / manual replay.
-   */
-  payload?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-payments".
- */
-export interface ProPayment {
-  id: string;
-  provider: 'dodo' | 'paddle' | 'stripe';
-  eventType: 'purchase' | 'renewal' | 'refund';
-  /**
-   * Signed integer in the currency minor units (cents). Refunds are negative.
-   */
-  amount: number;
-  /**
-   * ISO 4217, lowercased (e.g. "usd").
-   */
-  currency?: string | null;
-  /**
-   * Tax portion of the amount, in minor units (signed like `amount`).
-   */
-  taxAmount?: number | null;
-  /**
-   * Amount settled to the merchant after FX/fees, in minor units (signed).
-   */
-  settlementAmount?: number | null;
-  /**
-   * ISO 4217 of the settled amount, lowercased.
-   */
-  settlementCurrency?: string | null;
-  /**
-   * Billing country, ISO 3166-1 alpha-2 (e.g. "US").
-   */
-  country?: string | null;
-  /**
-   * e.g. "card", "upi".
-   */
-  paymentMethod?: string | null;
-  /**
-   * e.g. "visa", "mastercard".
-   */
-  cardNetwork?: string | null;
-  cardLastFour?: string | null;
-  customerEmail?: string | null;
-  customerName?: string | null;
-  providerCustomerId?: string | null;
-  planKey?: string | null;
-  productId?: string | null;
-  providerPaymentId: string;
-  providerSubscriptionId?: string | null;
-  license?: (string | null) | ProLicense;
-  /**
-   * Provider event timestamp (when the money moved).
-   */
-  occurredAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -691,20 +452,12 @@ export interface PayloadLockedDocument {
         value: string | Legal;
       } | null)
     | ({
-        relationTo: 'faq-categories';
-        value: string | FaqCategory;
-      } | null)
-    | ({
         relationTo: 'faqs';
         value: string | Faq;
       } | null)
     | ({
         relationTo: 'testimonials';
         value: string | Testimonial;
-      } | null)
-    | ({
-        relationTo: 'menus';
-        value: string | Menu;
       } | null)
     | ({
         relationTo: 'media';
@@ -715,32 +468,8 @@ export interface PayloadLockedDocument {
         value: string | SiteConfig;
       } | null)
     | ({
-        relationTo: 'pro-domains';
-        value: string | ProDomain;
-      } | null)
-    | ({
-        relationTo: 'pro-licenses';
-        value: string | ProLicense;
-      } | null)
-    | ({
-        relationTo: 'pro-activations';
-        value: string | ProActivation;
-      } | null)
-    | ({
-        relationTo: 'pro-versions';
-        value: string | ProVersion;
-      } | null)
-    | ({
-        relationTo: 'pro-validate-log';
-        value: string | ProValidateLog;
-      } | null)
-    | ({
-        relationTo: 'pro-webhook-events';
-        value: string | ProWebhookEvent;
-      } | null)
-    | ({
-        relationTo: 'pro-payments';
-        value: string | ProPayment;
+        relationTo: 'menus';
+        value: string | Menu;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -867,24 +596,12 @@ export interface LegalSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faq-categories_select".
- */
-export interface FaqCategoriesSelect<T extends boolean = true> {
-  app?: T;
-  name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
   app?: T;
   question?: T;
   answer?: T;
-  category?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -902,6 +619,69 @@ export interface TestimonialsSelect<T extends boolean = true> {
   avatar?: T;
   rating?: T;
   socialLink?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  app?: T;
+  alt?: T;
+  deletedAt?: T;
+  deletedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-config_select".
+ */
+export interface SiteConfigSelect<T extends boolean = true> {
+  app?: T;
+  name?: T;
+  tagline?: T;
+  logo?: T;
+  favicon?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  physicalAddress?:
+    | T
+    | {
+        addressLine1?: T;
+        addressLine2?: T;
+        city?: T;
+        state?: T;
+        zip?: T;
+        location?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  privacyPolicyPage?: T;
+  termsOfServicesPage?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -937,188 +717,6 @@ export interface MenusSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  app?: T;
-  alt?: T;
-  deletedAt?: T;
-  deletedBy?: T;
-  prefix?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-config_select".
- */
-export interface SiteConfigSelect<T extends boolean = true> {
-  name?: T;
-  tagline?: T;
-  logo?: T;
-  favicon?: T;
-  contactEmail?: T;
-  contactPhone?: T;
-  physicalAddress?:
-    | T
-    | {
-        addressLine1?: T;
-        addressLine2?: T;
-        city?: T;
-        state?: T;
-        zip?: T;
-        location?: T;
-      };
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  privacyPolicyPage?: T;
-  termsOfServicesPage?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  app?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-domains_select".
- */
-export interface ProDomainsSelect<T extends boolean = true> {
-  domain?: T;
-  trialStartedAt?: T;
-  trialEndsAt?: T;
-  firstSeenAt?: T;
-  lastSeenAt?: T;
-  lastIp?: T;
-  lastVersion?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-licenses_select".
- */
-export interface ProLicensesSelect<T extends boolean = true> {
-  licenseKey?: T;
-  status?: T;
-  updatesUntil?: T;
-  expiresAt?: T;
-  maxDomains?: T;
-  whiteLabel?: T;
-  user?: T;
-  provider?: T;
-  planKey?: T;
-  providerCustomerId?: T;
-  providerSubscriptionId?: T;
-  providerPaymentId?: T;
-  buyerEmail?: T;
-  notes?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-activations_select".
- */
-export interface ProActivationsSelect<T extends boolean = true> {
-  license?: T;
-  domain?: T;
-  activatedAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-versions_select".
- */
-export interface ProVersionsSelect<T extends boolean = true> {
-  version?: T;
-  releasedAt?: T;
-  title?: T;
-  releaseNotes?: T;
-  published?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-validate-log_select".
- */
-export interface ProValidateLogSelect<T extends boolean = true> {
-  domain?: T;
-  licenseKey?: T;
-  version?: T;
-  statusReturned?: T;
-  ip?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-webhook-events_select".
- */
-export interface ProWebhookEventsSelect<T extends boolean = true> {
-  provider?: T;
-  eventId?: T;
-  eventType?: T;
-  status?: T;
-  license?: T;
-  note?: T;
-  error?: T;
-  payload?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pro-payments_select".
- */
-export interface ProPaymentsSelect<T extends boolean = true> {
-  provider?: T;
-  eventType?: T;
-  amount?: T;
-  currency?: T;
-  taxAmount?: T;
-  settlementAmount?: T;
-  settlementCurrency?: T;
-  country?: T;
-  paymentMethod?: T;
-  cardNetwork?: T;
-  cardLastFour?: T;
-  customerEmail?: T;
-  customerName?: T;
-  providerCustomerId?: T;
-  planKey?: T;
-  productId?: T;
-  providerPaymentId?: T;
-  providerSubscriptionId?: T;
-  license?: T;
-  occurredAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
