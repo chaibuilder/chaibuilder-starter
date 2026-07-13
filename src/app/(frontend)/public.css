@@ -1,0 +1,66 @@
+@config '../../../tailwind.config.mjs';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.rte {
+  h1,h2,h3,h4,h5,h6 {
+    @apply mt-5 mb-2;
+  }
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-base;
+  }
+  h5 {
+    @apply text-sm;
+  }
+  h6 {
+    @apply text-xs;
+  }
+  p {
+    &:empty {
+      @apply h-4;
+    }
+  }
+  ul, ol {
+    @apply mt-2 mb-2;
+  }
+  ul {
+    @apply list-disc pl-4 text-base;
+  }
+  ol {
+    @apply list-decimal pl-4 text-base;
+  }
+  li > p {
+    @apply m-0;
+  }
+  blockquote {
+    @apply pl-4 text-base;
+    p {
+      @apply pl-4 text-base;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes play-header-bg {
+    from {
+      background-color: transparent;
+    }
+    to {
+      /* theme(colors.background) maps to your bg-background variable */
+      background-color: theme('colors.background'); 
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      backdrop-blur: 8px; /* Optional: adds a nice glass effect */
+    }
+  }
+}
