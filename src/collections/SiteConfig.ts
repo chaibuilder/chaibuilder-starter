@@ -19,6 +19,7 @@ export const SiteConfig: CollectionConfig = {
   versions: {
     drafts: true,
   },
+  disableDuplicate: true,
   // One config row per app. Plugin AND-s app scope on read/update/delete.
   access: {
     create: createAppScopedSingletonCreate('site-config', { roleAccess: staff }),
@@ -44,7 +45,7 @@ export const SiteConfig: CollectionConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Branding',
+          label: 'General',
           fields: [
             {
               name: 'name',
@@ -165,6 +166,62 @@ export const SiteConfig: CollectionConfig = {
               name: 'termsOfServicesPage',
               type: 'text',
               localized: true,
+            },
+          ],
+        },
+        {
+          label: 'Custom HTML',
+          fields: [
+            {
+              name: 'headHTML',
+              type: 'textarea',
+              label: 'Header',
+              admin: {
+                description:
+                  'Custom HTML injected into the page <head> (meta tags, scripts, etc.).',
+              },
+            },
+            {
+              name: 'footerHTML',
+              type: 'textarea',
+              label: 'Footer',
+              admin: {
+                description: 'Custom HTML injected before the closing </body> tag.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Analytics',
+          fields: [
+            {
+              name: 'googleTagManagerId',
+              type: 'text',
+              label: 'Google Tag Manager ID',
+              admin: {
+                placeholder: 'GTM-XXXXXXX',
+              },
+            },
+            {
+              name: 'googleAnalyticsId',
+              type: 'text',
+              label: 'Google Analytics ID',
+              admin: {
+                placeholder: 'G-XXXXXXXXXX',
+              },
+            },
+            {
+              name: 'metaPixelId',
+              type: 'text',
+              label: 'Facebook Pixel ID',
+            },
+            {
+              name: 'clarityProjectId',
+              type: 'text',
+              label: 'Microsoft Clarity Project ID',
+              admin: {
+                placeholder: 'XXXXXXXXXX',
+              },
             },
           ],
         },

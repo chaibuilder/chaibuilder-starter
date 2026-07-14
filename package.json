@@ -19,6 +19,7 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "@next/third-parties": "16.2.9",
     "@payloadcms/db-sqlite": "3.85.1",
     "@payloadcms/next": "3.85.1",
     "@payloadcms/plugin-seo": "3.85.1",
@@ -27,6 +28,7 @@
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.11",
     "chaipro": "0.1.1",
+    "cheerio": "^1.2.0",
     "cnfast": "^0.0.8",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",

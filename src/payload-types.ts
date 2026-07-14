@@ -354,6 +354,18 @@ export interface SiteConfig {
     | null;
   privacyPolicyPage?: string | null;
   termsOfServicesPage?: string | null;
+  /**
+   * Custom HTML injected into the page <head> (meta tags, scripts, etc.).
+   */
+  headHTML?: string | null;
+  /**
+   * Custom HTML injected before the closing </body> tag.
+   */
+  footerHTML?: string | null;
+  googleTagManagerId?: string | null;
+  googleAnalyticsId?: string | null;
+  metaPixelId?: string | null;
+  clarityProjectId?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -675,6 +687,12 @@ export interface SiteConfigSelect<T extends boolean = true> {
       };
   privacyPolicyPage?: T;
   termsOfServicesPage?: T;
+  headHTML?: T;
+  footerHTML?: T;
+  googleTagManagerId?: T;
+  googleAnalyticsId?: T;
+  metaPixelId?: T;
+  clarityProjectId?: T;
   meta?:
     | T
     | {
