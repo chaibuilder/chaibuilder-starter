@@ -38,8 +38,8 @@ importers:
         specifier: ^0.5.11
         version: 0.5.11(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.9.0))
       chaipro:
-        specifier: 0.1.0
-        version: 0.1.0(72e26b94ad040e4bae99bf33572bdaf8)
+        specifier: 0.1.1
+        version: 0.1.1(72e26b94ad040e4bae99bf33572bdaf8)
       cnfast:
         specifier: ^0.0.8
         version: 0.0.8
@@ -3781,8 +3781,8 @@ packages:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
 
-  chaipro@0.1.0:
-    resolution: {integrity: sha512-v4P6KNARXktDEO60WJIYimNicCZ6fSlQO6tZW+VxpJS2CITgwzlwGSdMdF5wt9i+AZ8xV2OMLCb8mF8zXmr/fQ==}
+  chaipro@0.1.1:
+    resolution: {integrity: sha512-jMxOkwErGwdPTwUCYUNSPsxG77k+IkuClAuJ5GY0ccLS6FZP18xlL0P8jzfKSSFdOBKaeM3m9pu/ZvMsUP4VzQ==}
     peerDependencies:
       '@libsql/client': '>=0.14.0'
       '@payloadcms/db-postgres': '>=3.85.0'
@@ -8191,7 +8191,7 @@ snapshots:
 
   '@floating-ui/react-dom@2.1.6(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@floating-ui/dom': 1.7.4
+      '@floating-ui/dom': 1.8.0
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
 
@@ -9429,7 +9429,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.2.14)(react@19.2.6)
       '@radix-ui/react-context': 1.1.2(@types/react@19.2.14)(react@19.2.6)
@@ -9939,7 +9939,7 @@ snapshots:
       '@types/react': 19.2.14
       '@types/react-dom': 19.2.3(@types/react@19.2.14)
       lodash.merge: 4.6.2
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
       styled-components: 6.4.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -10992,7 +10992,7 @@ snapshots:
 
   chai@6.2.2: {}
 
-  chaipro@0.1.0(72e26b94ad040e4bae99bf33572bdaf8):
+  chaipro@0.1.1(72e26b94ad040e4bae99bf33572bdaf8):
     dependencies:
       '@ai-sdk/react': 3.0.221(react@19.2.6)(zod@4.3.5)
       '@floating-ui/dom': 1.7.4
@@ -14296,7 +14296,7 @@ snapshots:
       '@babel/runtime': 7.29.7
       '@emotion/cache': 11.14.0
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.6)
-      '@floating-ui/dom': 1.7.4
+      '@floating-ui/dom': 1.8.0
       '@types/react-transition-group': 4.4.12(@types/react@19.2.14)
       memoize-one: 6.0.0
       prop-types: 15.8.1
