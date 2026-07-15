@@ -2,6 +2,17 @@ import tailwindContainerQueries from '@tailwindcss/container-queries'
 import tailwindForms from '@tailwindcss/forms'
 import tailwindTypography from '@tailwindcss/typography'
 
+const SAFELIST = [
+  "[&_svg:not([class*='size-'])]:size-3",
+  "[&_svg:not([class*='size-'])]:size-3.5",
+  "[&_svg:not([class*='size-'])]:size-4",
+  "[&_svg:not([class*='size-'])]:size-5",
+  "[&>svg:not([class*='size-'])]:size-3",
+  "[&>svg:not([class*='size-'])]:size-3.5",
+  "[&>svg:not([class*='size-'])]:size-4",
+  "[&>svg:not([class*='size-'])]:size-5",
+]
+
 function shadcnTheme() {
   return {
     textColor: {
@@ -102,6 +113,7 @@ const getChaiBuilderTailwindConfig = ({
   return {
     darkMode: 'class',
     content: [...content],
+    safelist: SAFELIST,
     theme: {
       extend: {
         ...shadcnTheme(),
