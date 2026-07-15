@@ -8,5 +8,5 @@ export type JsonValue =
 
 export interface FormSubmissionData {
   formData: Record<string, JsonValue>
-  additionalData: Record<string, JsonValue>
+  additionalData?: Record<string, JsonValue>
 }
