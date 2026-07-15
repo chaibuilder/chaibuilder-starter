@@ -14,6 +14,7 @@ import { Users } from './collections/Users'
 import { Faqs } from './collections/Faqs'
 import { Testimonials } from './collections/Testimonials'
 import { SiteConfig } from './collections/SiteConfig'
+import { FormSubmissions } from './collections/FormSubmissions'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 
 import { getAdminRoute } from '@/utilities/adminRoute'
@@ -81,6 +82,7 @@ export default buildConfig({
     Testimonials,
     Media,
     SiteConfig,
+    FormSubmissions,
   ],
   globals: [],
   editor: lexicalEditor(),
@@ -111,6 +113,7 @@ export default buildConfig({
         'testimonials',
         'media',
         'site-config',
+        'form-submissions',
       ],
     }),
     seoPlugin({

@@ -1,6 +1,4 @@
-"use server";
-
-import { JsonValue } from "../form-submit-action";
+import type { JsonValue } from '../form-types'
 
 type FormSubmissionFieldValue = JsonValue;
 type FormSubmissionFields = Partial<Record<string, FormSubmissionFieldValue>>;
