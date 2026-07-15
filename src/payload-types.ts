@@ -75,6 +75,7 @@ export interface Config {
     testimonials: Testimonial;
     media: Media;
     'site-config': SiteConfig;
+    'form-submissions': FormSubmission;
     menus: Menu;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -91,6 +92,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -367,6 +369,38 @@ export interface SiteConfig {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Submissions from ChaiBuilder forms on the live site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: string;
+  app: string;
+  formName: string;
+  pageUrl?: string | null;
+  formData:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  additionalData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "menus".
  */
@@ -466,6 +500,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'site-config';
         value: string | SiteConfig;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'menus';
@@ -685,6 +723,19 @@ export interface SiteConfigSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  app?: T;
+  formName?: T;
+  pageUrl?: T;
+  formData?: T;
+  additionalData?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
