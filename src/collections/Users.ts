@@ -1,4 +1,11 @@
 import type { CollectionConfig } from 'payload'
+import type { AppRole } from '@/access/authenticated'
+import {
+  appAdmin,
+  appMember,
+  getAppRoleForUser,
+  setAppRoleForUser,
+} from '@/access/authenticated'
 import {
   buildForgotPasswordEmailHTML,
   buildForgotPasswordEmailSubject,
@@ -11,24 +18,26 @@ export const Users: CollectionConfig = {
     group: 'Admin',
   },
   access: {
-    // Admin panel requires an authenticated non-customer. `undefined !== 'customer'`
-    // would otherwise let unauthenticated requests through.
-    admin: ({ req }) => Boolean(req.user) && req.user?.role !== 'customer',
-    // Staff create users; the webhook creates customers via overrideAccess.
-    create: ({ req }) => Boolean(req.user && req.user.role !== 'customer'),
-    // Staff read everyone; a customer reads only their own record.
-    read: ({ req }) => {
-      if (!req.user) return false
-      if (req.user.role === 'customer') return { id: { equals: req.user.id } }
-      return true
-    },
-    // Staff update anyone; a customer updates only themselves (e.g. password).
-    update: ({ req }) => {
-      if (!req.user) return false
-      if (req.user.role === 'customer') return { id: { equals: req.user.id } }
-      return true
-    },
+    // Panel entry stays open to any active app member (editors/designers still use the CMS).
+    admin: async ({ req }) => Boolean(await appMember({ req })),
+    // Managing users is site-admin only: platform owner, or `app_users.role === 'admin'`.
+    // Denying read to non-admins also hides the collection from their admin nav.
+    create: appAdmin,
+    read: appAdmin,
+    update: appAdmin,
+    // Deleting a user is global (cross-app) — restrict to the platform owner.
     delete: ({ req }) => req.user?.role === 'super_admin',
+  },
+  hooks: {
+    // The app role is captured into req.context by the `appRole` field's beforeChange hook.
+    // Persist it to `app_users` here, where the created/updated user's id is available.
+    afterChange: [
+      async ({ doc, req }) => {
+        const role = (req.context?.appRole ?? undefined) as AppRole | undefined
+        if (role) await setAppRoleForUser(String(doc.id), role)
+        return doc
+      },
+    ],
   },
   auth: {
     forgotPassword: {
@@ -53,10 +62,9 @@ export const Users: CollectionConfig = {
       type: 'select',
       options: [
         { value: 'super_admin', label: 'Super Admin' },
-        { value: 'customer', label: 'Customer' },
-        { value: '', label: 'None' },
+        { value: 'none', label: 'None' },
       ],
-      defaultValue: 'super_admin',
+      defaultValue: 'none',
       // Available on req.user so access checks don't need a DB read.
       saveToJWT: true,
       // Field-level lock: only a super-admin may set/change role. Without this a
@@ -65,6 +73,43 @@ export const Users: CollectionConfig = {
       access: {
         create: ({ req }) => req.user?.role === 'super_admin',
         update: ({ req }) => req.user?.role === 'super_admin',
+      },
+    },
+    {
+      // App-scoped role. Virtual: never written to the `users` table — persisted to `app_users`
+      // by the collection afterChange hook. A user added here stays `none` on the platform.
+      name: 'appRole',
+      type: 'select',
+      virtual: true,
+      label: 'App Role',
+      options: [
+        { value: 'admin', label: 'Admin' },
+        { value: 'editor', label: 'Editor' },
+        { value: 'designer', label: 'Designer' },
+        { value: 'viewer', label: 'Viewer' },
+        { value: 'user', label: 'User' },
+      ],
+      admin: {
+        // Virtual fields default to readOnly; force it editable so admins can assign a role.
+        readOnly: false,
+        description:
+          'Role for this app (stored in app_users). The platform "Role" above stays None.',
+      },
+      // Only a site admin may assign an app role.
+      access: {
+        create: async ({ req }) => Boolean(await appAdmin({ req })),
+        update: async ({ req }) => Boolean(await appAdmin({ req })),
+      },
+      hooks: {
+        // Populate each row from the user's active app_users membership.
+        afterRead: [({ data }) => (data?.id ? getAppRoleForUser(String(data.id)) : null)],
+        // Stash the submitted value for the collection afterChange hook (doc.id not yet known here).
+        beforeChange: [
+          ({ value, req }) => {
+            req.context.appRole = value
+            return value
+          },
+        ],
       },
     },
     // Email added by default

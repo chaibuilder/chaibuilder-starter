@@ -2,10 +2,7 @@ import 'server-only'
 import '@/chai-context'
 import config from '@payload-config'
 import { createLibsqlDB } from 'chaipro/db/libsql'
-import {
-  asChaiBuilderGlobalProvider,
-  buildChaiBuilderConfig,
-} from 'chaipro/payload'
+import { asChaiBuilderGlobalProvider, buildChaiBuilderConfig } from 'chaipro/payload'
 import type { ResolvedChaiBuilderServerConfig } from 'chaipro/types'
 
 import { Blog } from '@/collections/Blog'
@@ -21,7 +18,31 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
   }),
   debugLevel: process.env.NODE_ENV === 'development' ? 1 : 0,
   ai: {
-    credits: { enabled: false },
+    models: [
+      {
+        id: 'zai/glm-5.2',
+        name: 'GLM 5.2',
+        provider: 'zai',
+        multiplier: 3,
+        description: '3x Credits',
+        // text-only model — it cannot read images/files
+        allowedFileTypes: [],
+      },
+      {
+        id: 'google/gemini-3.5-flash',
+        name: 'Gemini 3.5 Flash',
+        provider: 'google',
+        multiplier: 3,
+        description: '3x Credits',
+      },
+      {
+        id: 'google/gemini-3-flash',
+        name: 'Gemini 3 Flash',
+        provider: 'google',
+        multiplier: 1,
+        description: '1x Credits',
+      },
+    ],
   },
   globalDataProvider: asChaiBuilderGlobalProvider({ slug: 'site-config' }),
   pageTypes: [
@@ -38,7 +59,15 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
       dataProviderDepth: 2,
     },
   ],
-  collections: [Blog, Legal, Testimonials, Faqs]
+  features: {
+    redirects: true,
+    revisions: { enabled: true, drafts: true },
+    animation: true,
+    dragAndDrop:true,
+    ai: true,
+    trash:true
+  },
+  collections: [Blog, Legal, Testimonials, Faqs],
 })
 
 export default chaiConfig

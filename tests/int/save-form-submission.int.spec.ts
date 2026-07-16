@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { getPayload, type Payload } from 'payload'
 import config from '@/payload.config'
-import { saveFormSubmission } from '@/blocks/form/save-form-submission'
+import { saveFormSubmission } from '@/blocks/form/data'
 
 const APP = '00000000-0000-4000-8000-000000000099'
 

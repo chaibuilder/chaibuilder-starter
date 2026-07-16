@@ -1,7 +1,9 @@
 'use client'
 
-import { formSubmit } from '@/blocks/form/form-submit-action'
+import * as React from 'react'
 import { useState } from 'react'
+import { ChaiBlockComponentProps } from 'chaipro/types'
+import { formSubmit } from './action'
 
 type FormJSON = Record<string, string | boolean | number | null>
 type ChaiStyles = Record<string, string>
@@ -133,4 +135,22 @@ const FormComponent = ({
   )
 }
 
-export default FormComponent
+type ChaiFormProps = {
+  successMessage: string
+  errorMessage: string
+  styles: ChaiStyles
+  inBuilder: boolean
+  formName: string
+  children: React.ReactNode
+}
+
+const ChaiForm = (props: ChaiBlockComponentProps<ChaiFormProps>) => {
+  return (
+    <FormComponent
+      {...props}
+      blockProps={props.blockProps as React.HTMLAttributes<HTMLFormElement>}
+    />
+  )
+}
+
+export default ChaiForm

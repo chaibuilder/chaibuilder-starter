@@ -1,10 +1,20 @@
-import 'server-only'
-
+'use server'
 import config from '@payload-config'
 import type { FormSubmission } from '@/payload-types'
 import { getPayload } from 'payload'
 
-import type { FormSubmissionData } from './form-types'
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue }
+
+export interface FormSubmissionData {
+  formData: Record<string, JsonValue>
+  additionalData?: Record<string, JsonValue>
+}
 
 export async function saveFormSubmission({ formData, additionalData = {} }: FormSubmissionData) {
   const formName = (formData.formName as string) || 'contact'
@@ -33,4 +43,17 @@ export async function saveFormSubmission({ formData, additionalData = {} }: Form
     },
     overrideAccess: true,
   })
+}
+
+export async function formSubmit(data: FormSubmissionData) {
+  try {
+    const { formData, additionalData = {} } = data
+
+    await saveFormSubmission({ formData, additionalData })
+
+    return { success: true }
+  } catch (error) {
+    console.error('Form submission error:', error)
+    return { success: false }
+  }
 }

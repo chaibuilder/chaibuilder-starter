@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { staffContentAccess } from '@/access/authenticated'
+import { contentAccess } from '@/access/authenticated'
 
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
@@ -9,7 +9,7 @@ export const Testimonials: CollectionConfig = {
     group: 'Collections',
   },
   versions: { drafts: true },
-  access: staffContentAccess,
+  access: contentAccess,
   fields: [
     { name: 'name', type: 'text', required: true, localized: true },
     { name: 'designation', type: 'text', localized: true },

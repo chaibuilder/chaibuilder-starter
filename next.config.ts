@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_PAYLOAD_ADMIN_ROUTE: adminRouteSegment,
   },
+  serverExternalPackages: ['tailwindcss'],
+  // Page-style dedup reads public/chaistyles.css from the server at runtime (fs.readFile with a
+  // computed path), which file tracing can't see — include it in every serverless function.
+  outputFileTracingIncludes: {
+    '/**': ['./public/chaistyles.css'],
+  },
   async rewrites() {
     if (!isCustomAdminRoute()) {
       return []

@@ -6,10 +6,21 @@ import { getPayload } from 'payload'
 import { getServerSideURL } from '@/utilities/getURL'
 import { getChaiBuilder } from 'chaipro/nextjs/server'
 import { appWhere, hasSlugField, resolveAppId } from 'chaipro/payload'
-import { buildDynamicItemPath } from '@/lib/chai/build-dynamic-item-path'
 
 const EXCLUDE_COLLECTIONS = ['users', 'media']
 const APP_FIELD = 'app'
+
+/** Build public URL for a collection item from a dynamic page base slug. */
+export function buildDynamicItemPath(
+  base: { slug: string; dynamicSlugCustom?: string | null },
+  itemSlug: string,
+): string {
+  const normalizedBase = base.slug.endsWith('/') ? base.slug.slice(0, -1) : base.slug
+  const normalizedItem = itemSlug.replace(/^\/+/, '')
+  const custom = base.dynamicSlugCustom ?? ''
+  return `${normalizedBase}/${normalizedItem}${custom}`
+}
+
 
 /** Join origin (NEXT_PUBLIC_SERVER_URL) with a path slug like `/about`. */
 export function toAbsoluteUrl(path: string): string {

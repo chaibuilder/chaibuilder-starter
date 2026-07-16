@@ -10,14 +10,6 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  if (request.nextUrl.searchParams.has('r')) {
-    const url = new URL(request.nextUrl.href)
-    url.searchParams.delete('r')
-    return NextResponse.redirect(
-      `${url.origin}${adminUrl('api', 'revalidate')}?redirect=true&paths=${url.pathname}`,
-    )
-  }
-
   return NextResponse.next()
 }
 
