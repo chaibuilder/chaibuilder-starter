@@ -19,13 +19,11 @@ export const Users: CollectionConfig = {
     // Staff read everyone; a customer reads only their own record.
     read: ({ req }) => {
       if (!req.user) return false
-      if (req.user.role === 'customer') return { id: { equals: req.user.id } }
       return true
     },
     // Staff update anyone; a customer updates only themselves (e.g. password).
     update: ({ req }) => {
       if (!req.user) return false
-      if (req.user.role === 'customer') return { id: { equals: req.user.id } }
       return true
     },
     delete: ({ req }) => req.user?.role === 'super_admin',
@@ -53,10 +51,9 @@ export const Users: CollectionConfig = {
       type: 'select',
       options: [
         { value: 'super_admin', label: 'Super Admin' },
-        { value: 'customer', label: 'Customer' },
-        { value: '', label: 'None' },
+        { value: 'none', label: 'None' },
       ],
-      defaultValue: 'super_admin',
+      defaultValue: 'none',
       // Available on req.user so access checks don't need a DB read.
       saveToJWT: true,
       // Field-level lock: only a super-admin may set/change role. Without this a

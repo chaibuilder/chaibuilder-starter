@@ -53,3 +53,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# generated global stylesheet (dedup reference for page styles)
+/public/chaistyles.css
