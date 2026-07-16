@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { appMember, staff } from '@/access/authenticated'
 import {
   buildForgotPasswordEmailHTML,
   buildForgotPasswordEmailSubject,
@@ -11,21 +12,15 @@ export const Users: CollectionConfig = {
     group: 'Admin',
   },
   access: {
-    // Admin panel requires an authenticated non-customer. `undefined !== 'customer'`
-    // would otherwise let unauthenticated requests through.
-    admin: ({ req }) => Boolean(req.user) && req.user?.role !== 'customer',
-    // Staff create users; the webhook creates customers via overrideAccess.
-    create: ({ req }) => Boolean(req.user && req.user.role !== 'customer'),
-    // Staff read everyone; a customer reads only their own record.
-    read: ({ req }) => {
-      if (!req.user) return false
-      return true
-    },
-    // Staff update anyone; a customer updates only themselves (e.g. password).
-    update: ({ req }) => {
-      if (!req.user) return false
-      return true
-    },
+    // Admin panel requires the platform owner or an active member of the current app.
+    admin: appMember,
+    // Only writer roles (or the platform owner) create users.
+    create: staff,
+    // Any authenticated user may read (self and, for members, others).
+    read: ({ req }) => Boolean(req.user),
+    // Any authenticated user may update (e.g. their own password).
+    update: ({ req }) => Boolean(req.user),
+    // Only the global platform owner may delete a user.
     delete: ({ req }) => req.user?.role === 'super_admin',
   },
   auth: {
