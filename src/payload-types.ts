@@ -140,6 +140,10 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   role?: ('super_admin' | 'none') | null;
+  /**
+   * Role for this app (stored in app_users). The platform "Role" above stays None.
+   */
+  appRole?: ('admin' | 'editor' | 'designer' | 'viewer' | 'user') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -557,6 +561,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  appRole?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

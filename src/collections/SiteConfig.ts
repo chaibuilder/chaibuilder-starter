@@ -1,6 +1,6 @@
-import { revalidateTag } from 'next/cache'
 import { canWriteContent, memberOrPublished } from '@/access/authenticated'
-import { createAppScopedSingletonCreate } from 'chaipro/payload'
+import { createAppScopedSingletonCreate, resolveAppId } from 'chaipro/payload'
+import { revalidateTag } from 'next/cache'
 import type { CollectionConfig } from 'payload'
 
 export const SiteConfig: CollectionConfig = {
@@ -27,15 +27,17 @@ export const SiteConfig: CollectionConfig = {
     delete: canWriteContent,
   },
   hooks: {
-    // The `app` field (injected by chaiBuilderPlugin) stamps the app id; use it
-    // here instead of re-resolving.
     afterChange: [
-      async ({ doc }) => {
-        if (!doc?._status || doc?._status === 'published') {
-          // Only bust the per-app cache tag — the unscoped `global:site-config`
-          // tag would invalidate every tenant's cached global data.
-          if (doc?.app) revalidateTag(`global:site-config:${doc.app}`, 'max')
-        }
+      async ({ doc, req }) => {
+        if (doc?._status && doc._status !== 'published') return
+
+        const appId = (typeof doc?.app === 'string' && doc.app) || (await resolveAppId({ req }))
+        await Promise.all([
+          revalidateTag(`global:site-config:${appId}`, 'max'),
+          revalidateTag(`global:site-config`, 'max'),
+          revalidateTag(`site-global-data-${appId}`, 'max'),
+          revalidateTag(`site-global-data`, 'max'),
+        ])
       },
     ],
   },

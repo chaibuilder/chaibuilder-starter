@@ -4,8 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-import { chaiBuilderSchemaHook } from './chai-db'
-import { chaiBuilderPlugin } from 'chaipro/payload'
+import { chaiBuilderPlugin, chaiBuilderSchemaHookSqlite } from 'chaipro/payload'
 import { Blog } from './collections/Blog'
 import { Legal } from './collections/Legal'
 import { BlogCategories } from './collections/BlogCategories'
@@ -95,7 +94,7 @@ export default buildConfig({
       authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
     },
     push: process.env.PAYLOAD_DB_PUSH === 'true',
-    beforeSchemaInit: [chaiBuilderSchemaHook],
+    beforeSchemaInit: [chaiBuilderSchemaHookSqlite],
     idType: 'uuid',
     transactionOptions: {},
   }),

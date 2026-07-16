@@ -1605,6 +1605,114 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "app_redirects": {
+      "name": "app_redirects",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(datetime('now'))"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(datetime('now'))"
+        },
+        "app": {
+          "name": "app",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fromPath": {
+          "name": "fromPath",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "toPath": {
+          "name": "toPath",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "permanent": {
+          "name": "permanent",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "active": {
+          "name": "active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_app_redirects_app_toPath": {
+          "name": "idx_app_redirects_app_toPath",
+          "columns": [
+            "app",
+            "toPath"
+          ],
+          "isUnique": false
+        },
+        "app_redirects_app_fromPath_unique": {
+          "name": "app_redirects_app_fromPath_unique",
+          "columns": [
+            "app",
+            "fromPath"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "app_redirects_app_fkey": {
+          "name": "app_redirects_app_fkey",
+          "tableFrom": "app_redirects",
+          "tableTo": "apps",
+          "columnsFrom": [
+            "app"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "app_trash": {
       "name": "app_trash",
       "columns": {
@@ -3023,7 +3131,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "'super_admin'"
+          "default": "'none'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -6766,6 +6874,89 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "form_submissions": {
+      "name": "form_submissions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text(36)",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "app": {
+          "name": "app",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "form_name": {
+          "name": "form_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "page_url": {
+          "name": "page_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_data": {
+          "name": "form_data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "additional_data": {
+          "name": "additional_data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        }
+      },
+      "indexes": {
+        "form_submissions_updated_at_idx": {
+          "name": "form_submissions_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "form_submissions_created_at_idx": {
+          "name": "form_submissions_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "menus_items_children": {
       "name": "menus_items_children",
       "columns": {
@@ -7838,6 +8029,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "form_submissions_id": {
+          "name": "form_submissions_id",
+          "type": "text(36)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "menus_id": {
           "name": "menus_id",
           "type": "text(36)",
@@ -7921,6 +8119,13 @@
           "name": "payload_locked_documents_rels_site_config_id_idx",
           "columns": [
             "site_config_id"
+          ],
+          "isUnique": false
+        },
+        "payload_locked_documents_rels_form_submissions_id_idx": {
+          "name": "payload_locked_documents_rels_form_submissions_id_idx",
+          "columns": [
+            "form_submissions_id"
           ],
           "isUnique": false
         },
@@ -8043,6 +8248,19 @@
           "tableTo": "site_config",
           "columnsFrom": [
             "site_config_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_form_submissions_fk": {
+          "name": "payload_locked_documents_rels_form_submissions_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "form_submissions",
+          "columnsFrom": [
+            "form_submissions_id"
           ],
           "columnsTo": [
             "id"
@@ -8310,6 +8528,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "2cd70174-c012-419c-ac5e-614d82c99623",
+  "id": "07a4d25f-479c-4a8a-85aa-5f1199fb387c",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

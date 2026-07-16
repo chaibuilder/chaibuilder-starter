@@ -226,6 +226,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	FOREIGN KEY (\`app\`) REFERENCES \`apps\`(\`id\`) ON UPDATE no action ON DELETE no action
   );
   `)
+  await db.run(sql`CREATE TABLE \`app_redirects\` (
+  	\`id\` text PRIMARY KEY NOT NULL,
+  	\`createdAt\` text DEFAULT (datetime('now')) NOT NULL,
+  	\`updatedAt\` text DEFAULT (datetime('now')) NOT NULL,
+  	\`app\` text NOT NULL,
+  	\`fromPath\` text NOT NULL,
+  	\`toPath\` text NOT NULL,
+  	\`permanent\` integer DEFAULT true NOT NULL,
+  	\`active\` integer DEFAULT true NOT NULL,
+  	\`createdBy\` text,
+  	FOREIGN KEY (\`app\`) REFERENCES \`apps\`(\`id\`) ON UPDATE no action ON DELETE no action
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`idx_app_redirects_app_toPath\` ON \`app_redirects\` (\`app\`,\`toPath\`);`)
+  await db.run(sql`CREATE UNIQUE INDEX \`app_redirects_app_fromPath_unique\` ON \`app_redirects\` (\`app\`,\`fromPath\`);`)
   await db.run(sql`CREATE TABLE \`app_trash\` (
   	\`id\` text PRIMARY KEY NOT NULL,
   	\`deletedAt\` text DEFAULT (datetime('now')) NOT NULL,
@@ -430,7 +445,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`users_sessions_parent_id_idx\` ON \`users_sessions\` (\`_parent_id\`);`)
   await db.run(sql`CREATE TABLE \`users\` (
   	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`role\` text DEFAULT 'super_admin',
+  	\`role\` text DEFAULT 'none',
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`email\` text NOT NULL,
@@ -960,6 +975,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
   await db.run(sql`CREATE INDEX \`_site_config_v_version_meta_version_meta_image_idx\` ON \`_site_config_v_locales\` (\`version_meta_image_id\`,\`_locale\`);`)
   await db.run(sql`CREATE UNIQUE INDEX \`_site_config_v_locales_locale_parent_id_unique\` ON \`_site_config_v_locales\` (\`_locale\`,\`_parent_id\`);`)
+  await db.run(sql`CREATE TABLE \`form_submissions\` (
+  	\`id\` text(36) PRIMARY KEY NOT NULL,
+  	\`app\` text NOT NULL,
+  	\`form_name\` text NOT NULL,
+  	\`page_url\` text,
+  	\`form_data\` text NOT NULL,
+  	\`additional_data\` text,
+  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`form_submissions_updated_at_idx\` ON \`form_submissions\` (\`updated_at\`);`)
+  await db.run(sql`CREATE INDEX \`form_submissions_created_at_idx\` ON \`form_submissions\` (\`created_at\`);`)
   await db.run(sql`CREATE TABLE \`menus_items_children\` (
   	\`_order\` integer NOT NULL,
   	\`_parent_id\` text NOT NULL,
@@ -1119,6 +1147,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`testimonials_id\` text(36),
   	\`media_id\` text(36),
   	\`site_config_id\` text(36),
+  	\`form_submissions_id\` text(36),
   	\`menus_id\` text(36),
   	FOREIGN KEY (\`parent_id\`) REFERENCES \`payload_locked_documents\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`users_id\`) REFERENCES \`users\`(\`id\`) ON UPDATE no action ON DELETE cascade,
@@ -1129,6 +1158,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	FOREIGN KEY (\`testimonials_id\`) REFERENCES \`testimonials\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`media_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`site_config_id\`) REFERENCES \`site_config\`(\`id\`) ON UPDATE no action ON DELETE cascade,
+  	FOREIGN KEY (\`form_submissions_id\`) REFERENCES \`form_submissions\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`menus_id\`) REFERENCES \`menus\`(\`id\`) ON UPDATE no action ON DELETE cascade
   );
   `)
@@ -1143,6 +1173,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_testimonials_id_idx\` ON \`payload_locked_documents_rels\` (\`testimonials_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_media_id_idx\` ON \`payload_locked_documents_rels\` (\`media_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_site_config_id_idx\` ON \`payload_locked_documents_rels\` (\`site_config_id\`);`)
+  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_form_submissions_id_idx\` ON \`payload_locked_documents_rels\` (\`form_submissions_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_menus_id_idx\` ON \`payload_locked_documents_rels\` (\`menus_id\`);`)
   await db.run(sql`CREATE TABLE \`payload_preferences\` (
   	\`id\` text(36) PRIMARY KEY NOT NULL,
@@ -1193,6 +1224,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`app_pages_metadata\`;`)
   await db.run(sql`DROP TABLE \`app_pages_online\`;`)
   await db.run(sql`DROP TABLE \`app_pages_revisions\`;`)
+  await db.run(sql`DROP TABLE \`app_redirects\`;`)
   await db.run(sql`DROP TABLE \`app_trash\`;`)
   await db.run(sql`DROP TABLE \`app_user_addons\`;`)
   await db.run(sql`DROP TABLE \`app_user_plans\`;`)
@@ -1239,6 +1271,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`_site_config_v_version_social_links\`;`)
   await db.run(sql`DROP TABLE \`_site_config_v\`;`)
   await db.run(sql`DROP TABLE \`_site_config_v_locales\`;`)
+  await db.run(sql`DROP TABLE \`form_submissions\`;`)
   await db.run(sql`DROP TABLE \`menus_items_children\`;`)
   await db.run(sql`DROP TABLE \`menus_items_children_locales\`;`)
   await db.run(sql`DROP TABLE \`menus_items\`;`)

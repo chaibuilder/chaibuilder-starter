@@ -1,9 +1,7 @@
 import type { Access, PayloadRequest } from 'payload'
 import { randomUUID } from 'crypto'
 import { and, eq } from 'drizzle-orm'
-import { getChaiBuilder } from 'chaipro/nextjs/server'
 import type { ChaiUserPermissionOverride } from 'chaipro/types'
-import chaiConfig from '@chaibuilder-config'
 
 /**
  * App-scoped roles live in the chaipro `app_users` table (one row per user per app),
@@ -43,6 +41,8 @@ async function getAppUser(req: PayloadRequest): Promise<AppUser | null> {
     const appId = process.env.CHAIBUILDER_APP_KEY
     if (!appId) return null
 
+    const { getChaiBuilder } = await import('chaipro/nextjs/server')
+    const { default: chaiConfig } = await import('@chaibuilder-config')
     const cb = await getChaiBuilder(await chaiConfig)
     const { data, error } = await cb.safeQuery(({ db, schema }) =>
       db
@@ -113,6 +113,8 @@ export async function getAppRoleForUser(userId: string): Promise<AppRole | null>
   const appId = process.env.CHAIBUILDER_APP_KEY
   if (!appId) return null
 
+  const { getChaiBuilder } = await import('chaipro/nextjs/server')
+  const { default: chaiConfig } = await import('@chaibuilder-config')
   const cb = await getChaiBuilder(await chaiConfig)
   const { data, error } = await cb.safeQuery(({ db, schema }) =>
     db
@@ -140,6 +142,8 @@ export async function setAppRoleForUser(userId: string, role: AppRole): Promise<
   const appId = process.env.CHAIBUILDER_APP_KEY
   if (!appId) throw new Error('CHAIBUILDER_APP_KEY not set')
 
+  const { getChaiBuilder } = await import('chaipro/nextjs/server')
+  const { default: chaiConfig } = await import('@chaibuilder-config')
   const cb = await getChaiBuilder(await chaiConfig)
   const { data: existing, error: selError } = await cb.safeQuery(({ db, schema }) =>
     db
