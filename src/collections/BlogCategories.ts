@@ -1,5 +1,5 @@
 import type { CollectionConfig, FieldHook } from 'payload'
-import { staffContentAccess } from '@/access/authenticated'
+import { contentAccess } from '@/access/authenticated'
 
 const slugHook: FieldHook = ({ value, data }) => {
   if (value)
@@ -24,7 +24,7 @@ export const BlogCategories: CollectionConfig = {
     group: 'Collections',
   },
   versions: { drafts: true },
-  access: staffContentAccess,
+  access: contentAccess,
   fields: [
     { name: 'name', type: 'text', required: true, localized: true },
     {

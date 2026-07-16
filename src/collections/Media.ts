@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
-import { mediaContentAccess } from '@/access/authenticated'
+import { mediaAccess } from '@/access/authenticated'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     group: 'Site',
   },
-  access: mediaContentAccess,
+  access: mediaAccess,
   fields: [
     {
       name: 'alt',
