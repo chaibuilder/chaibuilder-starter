@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { staff } from '@/access/authenticated'
+import { canWriteContent } from '@/access/authenticated'
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
@@ -12,9 +12,9 @@ export const FormSubmissions: CollectionConfig = {
   },
   access: {
     create: () => false,
-    read: staff,
-    update: staff,
-    delete: staff,
+    read: canWriteContent,
+    update: canWriteContent,
+    delete: canWriteContent,
   },
   fields: [
     {

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { defaultRichTextValue } from '@payloadcms/richtext-lexical'
-import { staffContentAccess } from '@/access/authenticated'
+import { contentAccess } from '@/access/authenticated'
 import { slugField } from '../fields/slugField'
 import { sanitizeRichTextField } from '../fields/richTextFieldHooks'
 import { richTextEditor } from '../fields/richTextEditor'
@@ -17,7 +17,7 @@ export const Legal: CollectionConfig = {
     group: 'Collections',
   },
   versions: { drafts: true },
-  access: staffContentAccess,
+  access: contentAccess,
   fields: [
     slugField({
       localized: true,

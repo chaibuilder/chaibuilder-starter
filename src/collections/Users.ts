@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { appMember, staff } from '@/access/authenticated'
+import { appMember, canWriteContent } from '@/access/authenticated'
 import {
   buildForgotPasswordEmailHTML,
   buildForgotPasswordEmailSubject,
@@ -15,7 +15,7 @@ export const Users: CollectionConfig = {
     // Admin panel requires the platform owner or an active member of the current app.
     admin: appMember,
     // Only writer roles (or the platform owner) create users.
-    create: staff,
+    create: canWriteContent,
     // Any authenticated user may read (self and, for members, others).
     read: ({ req }) => Boolean(req.user),
     // Any authenticated user may update (e.g. their own password).

@@ -85,9 +85,9 @@ export const appMember = async ({ req }: { req: PayloadRequest }): Promise<boole
 
 /**
  * Write access for app-scoped content: the platform owner, or an app member whose
- * `app_users.role` is a writer role (superadmin/editor/designer).
+ * `app_users.role` is a writer role (superadmin/editor/designer). viewer/user are read-only.
  */
-export const staff: Access = async ({ req }) => {
+export const canWriteContent: Access = async ({ req }) => {
   if (!req.user) return false
   if (isPlatformSuperAdmin(req)) return true
   const role = await getAppRole(req)
@@ -105,7 +105,7 @@ export const anyone: Access = () => true
  * app member see everything; the public (and non-members) see published only. App scoping is
  * added on top by `chaiBuilderPlugin`, so these stay tenant-agnostic.
  */
-export const staffOrPublished: Access = async ({ req }) => {
+export const memberOrPublished: Access = async ({ req }) => {
   if (!req.user) return { _status: { equals: 'published' } }
   if (isPlatformSuperAdmin(req)) return true
   const role = await getAppRole(req)
@@ -113,17 +113,17 @@ export const staffOrPublished: Access = async ({ req }) => {
 }
 
 /** Access preset for app-scoped draft content collections. */
-export const staffContentAccess = {
-  create: staff,
-  read: staffOrPublished,
-  update: staff,
-  delete: staff,
+export const contentAccess = {
+  create: canWriteContent,
+  read: memberOrPublished,
+  update: canWriteContent,
+  delete: canWriteContent,
 }
 
 /** Access preset for app-scoped non-draft public collections (e.g. media). */
-export const mediaContentAccess = {
-  create: staff,
+export const mediaAccess = {
+  create: canWriteContent,
   read: anyone,
-  update: staff,
-  delete: staff,
+  update: canWriteContent,
+  delete: canWriteContent,
 }

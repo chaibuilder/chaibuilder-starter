@@ -1,5 +1,5 @@
 import { revalidateTag } from 'next/cache'
-import { staff, staffOrPublished } from '@/access/authenticated'
+import { canWriteContent, memberOrPublished } from '@/access/authenticated'
 import { createAppScopedSingletonCreate } from 'chaipro/payload'
 import type { CollectionConfig } from 'payload'
 
@@ -21,10 +21,10 @@ export const SiteConfig: CollectionConfig = {
   },
   // One config row per app. Plugin AND-s app scope on read/update/delete.
   access: {
-    create: createAppScopedSingletonCreate('site-config', { roleAccess: staff }),
-    read: staffOrPublished,
-    update: staff,
-    delete: staff,
+    create: createAppScopedSingletonCreate('site-config', { roleAccess: canWriteContent }),
+    read: memberOrPublished,
+    update: canWriteContent,
+    delete: canWriteContent,
   },
   hooks: {
     // The `app` field (injected by chaiBuilderPlugin) stamps the app id; use it
