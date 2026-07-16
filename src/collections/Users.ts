@@ -16,10 +16,16 @@ export const Users: CollectionConfig = {
     admin: appMember,
     // Only writer roles (or the platform owner) create users.
     create: canWriteContent,
-    // Any authenticated user may read (self and, for members, others).
-    read: ({ req }) => Boolean(req.user),
-    // Any authenticated user may update (e.g. their own password).
-    update: ({ req }) => Boolean(req.user),
+    // Any authenticated user may read their own record; app members (or platform owner) may read all.
+    read: async ({ req }) => {
+      if (!req.user) return false
+      return (await appMember({ req })) ? true : { id: { equals: req.user.id } }
+    },
+    // Any authenticated user may update their own record; app members (or platform owner) may update all.
+    update: async ({ req }) => {
+      if (!req.user) return false
+      return (await appMember({ req })) ? true : { id: { equals: req.user.id } }
+    },
     // Only the global platform owner may delete a user.
     delete: ({ req }) => req.user?.role === 'super_admin',
   },
