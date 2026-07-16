@@ -1,15 +1,13 @@
 'use server'
 
-// import { notifySiteOwnerOfFormSubmission } from './mail/form-submission'
-import type { FormSubmissionData } from './form-types'
+import type { FormSubmissionData } from './data'
 
 export async function formSubmit(data: FormSubmissionData) {
   try {
-    const { saveFormSubmission } = await import('./save-form-submission')
+    const { saveFormSubmission } = await import('./data')
     const { formData, additionalData = {} } = data
 
     await saveFormSubmission({ formData, additionalData })
-    // await notifySiteOwnerOfFormSubmission('chaibuilder.com', formData, additionalData)
 
     return { success: true }
   } catch (error) {

@@ -59,7 +59,6 @@ export default buildConfig({
       },
     },
     components: {
-      // ponytail: ~/payload/* aliases to src/payload-bridge (chaipro plugin paths)
       providers: ['~/payload/components/iframe-bridge#IframeBridge'],
       graphics: {
         Logo: '@/components/admin/Logo#Logo',

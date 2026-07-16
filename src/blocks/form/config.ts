@@ -1,27 +1,4 @@
-import * as React from 'react'
-import FormComponent from './form-component'
-import { ChaiBlockComponentProps } from 'chaipro/types'
 import { registerChaiBlockProps, stylesProp } from 'chaipro/registry'
-
-type ChaiStyles = Record<string, string>
-
-type ChaiFormProps = {
-  successMessage: string
-  errorMessage: string
-  styles: ChaiStyles
-  inBuilder: boolean
-  formName: string
-  children: React.ReactNode
-}
-
-const ChaiForm = (props: ChaiBlockComponentProps<ChaiFormProps>) => {
-  return (
-    <FormComponent
-      {...props}
-      blockProps={props.blockProps as React.HTMLAttributes<HTMLFormElement>}
-    />
-  )
-}
 
 const FormConfig = {
   type: 'Form',
@@ -65,4 +42,3 @@ const FormConfig = {
 }
 
 export { FormConfig }
-export default ChaiForm
