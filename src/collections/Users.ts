@@ -1,5 +1,11 @@
 import type { CollectionConfig } from 'payload'
-import { appMember, canWriteContent } from '@/access/authenticated'
+import type { AppRole } from '@/access/authenticated'
+import {
+  appAdmin,
+  appMember,
+  getAppRoleForUser,
+  setAppRoleForUser,
+} from '@/access/authenticated'
 import {
   buildForgotPasswordEmailHTML,
   buildForgotPasswordEmailSubject,
@@ -12,22 +18,26 @@ export const Users: CollectionConfig = {
     group: 'Admin',
   },
   access: {
-    // Admin panel requires the platform owner or an active member of the current app.
-    admin: appMember,
-    // Only writer roles (or the platform owner) create users.
-    create: canWriteContent,
-    // Any authenticated user may read their own record; app members (or platform owner) may read all.
-    read: async ({ req }) => {
-      if (!req.user) return false
-      return (await appMember({ req })) ? true : { id: { equals: req.user.id } }
-    },
-    // Any authenticated user may update their own record; app members (or platform owner) may update all.
-    update: async ({ req }) => {
-      if (!req.user) return false
-      return (await appMember({ req })) ? true : { id: { equals: req.user.id } }
-    },
-    // Only the global platform owner may delete a user.
+    // Panel entry stays open to any active app member (editors/designers still use the CMS).
+    admin: async ({ req }) => Boolean(await appMember({ req })),
+    // Managing users is site-admin only: platform owner, or `app_users.role === 'admin'`.
+    // Denying read to non-admins also hides the collection from their admin nav.
+    create: appAdmin,
+    read: appAdmin,
+    update: appAdmin,
+    // Deleting a user is global (cross-app) — restrict to the platform owner.
     delete: ({ req }) => req.user?.role === 'super_admin',
+  },
+  hooks: {
+    // The app role is captured into req.context by the `appRole` field's beforeChange hook.
+    // Persist it to `app_users` here, where the created/updated user's id is available.
+    afterChange: [
+      async ({ doc, req }) => {
+        const role = (req.context?.appRole ?? undefined) as AppRole | undefined
+        if (role) await setAppRoleForUser(String(doc.id), role)
+        return doc
+      },
+    ],
   },
   auth: {
     forgotPassword: {
@@ -63,6 +73,43 @@ export const Users: CollectionConfig = {
       access: {
         create: ({ req }) => req.user?.role === 'super_admin',
         update: ({ req }) => req.user?.role === 'super_admin',
+      },
+    },
+    {
+      // App-scoped role. Virtual: never written to the `users` table — persisted to `app_users`
+      // by the collection afterChange hook. A user added here stays `none` on the platform.
+      name: 'appRole',
+      type: 'select',
+      virtual: true,
+      label: 'App Role',
+      options: [
+        { value: 'admin', label: 'Admin' },
+        { value: 'editor', label: 'Editor' },
+        { value: 'designer', label: 'Designer' },
+        { value: 'viewer', label: 'Viewer' },
+        { value: 'user', label: 'User' },
+      ],
+      admin: {
+        // Virtual fields default to readOnly; force it editable so admins can assign a role.
+        readOnly: false,
+        description:
+          'Role for this app (stored in app_users). The platform "Role" above stays None.',
+      },
+      // Only a site admin may assign an app role.
+      access: {
+        create: async ({ req }) => Boolean(await appAdmin({ req })),
+        update: async ({ req }) => Boolean(await appAdmin({ req })),
+      },
+      hooks: {
+        // Populate each row from the user's active app_users membership.
+        afterRead: [({ data }) => (data?.id ? getAppRoleForUser(String(data.id)) : null)],
+        // Stash the submitted value for the collection afterChange hook (doc.id not yet known here).
+        beforeChange: [
+          ({ value, req }) => {
+            req.context.appRole = value
+            return value
+          },
+        ],
       },
     },
     // Email added by default
