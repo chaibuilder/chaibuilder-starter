@@ -77,8 +77,7 @@ const getAppRole = async (req: PayloadRequest): Promise<AppRole | null> =>
 export const authenticated: Access = ({ req }) => Boolean(req.user)
 
 /** Platform owner, or any active member of the current app (any role). */
-export const appMember = async ({ req }: { req: PayloadRequest }): Promise<boolean> => {
-  if (!req.user) return false
+export const appMember: Access = async ({ req }) => {
   if (isPlatformSuperAdmin(req)) return true
   return (await getAppRole(req)) != null
 }
