@@ -59,7 +59,7 @@ export default buildConfig({
       },
     },
     components: {
-      providers: ['~/payload/components/iframe-bridge#IframeBridge'],
+      providers: ['chaipro/payload/client#IframeBridge'],
       graphics: {
         Logo: '@/components/admin/Logo#Logo',
         Icon: '@/components/admin/Icon#Icon',
@@ -101,6 +101,13 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    seoPlugin({
+      collections: ['blog', 'legal', 'site-config'],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => doc?.title || doc?.name || '',
+      generateDescription: ({ doc }) => doc?.excerpt || doc?.tagline || doc?.title || '',
+      tabbedUI: true,
+    }),
     chaiBuilderPlugin({
       menus: true,
       revalidateCollections: ['blog', 'legal'],
@@ -114,13 +121,6 @@ export default buildConfig({
         'site-config',
         'form-submissions',
       ],
-    }),
-    seoPlugin({
-      collections: ['blog', 'legal', 'site-config'],
-      uploadsCollection: 'media',
-      generateTitle: ({ doc }) => doc?.title || doc?.name || '',
-      generateDescription: ({ doc }) => doc?.excerpt || doc?.tagline || doc?.title || '',
-      tabbedUI: true,
     }),
   ],
 })

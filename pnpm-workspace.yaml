@@ -9,8 +9,7 @@ allowBuilds:
   unrs-resolver: true
 
 minimumReleaseAgeExclude:
-  - chaipro@0.1.0 || 0.1.1
-  - chaipro@0.1.3
+  - chaipro@0.1.0 || 0.1.1 || 0.1.3 || 0.1.4 || 0.1.5 || 0.1.7
 
 overrides:
   "framer-motion@12.23.20>motion-dom": "12.23.20"

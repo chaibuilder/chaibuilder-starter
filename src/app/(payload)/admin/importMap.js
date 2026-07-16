@@ -1,5 +1,5 @@
-import { IframeNotifier as IframeNotifier_a0e15ff19475e4cb92c2d03c5339450f } from '~/payload/components/iframe-notifier'
-import { IframeCloseGuard as IframeCloseGuard_7a062c6145fefcebb7cc43005f0fe03a } from '~/payload/components/iframe-close-guard'
+import { IframeNotifier as IframeNotifier_d0f3d26856bfc83d1a101b16c99b1e7a } from 'chaipro/payload/client'
+import { IframeCloseGuard as IframeCloseGuard_d0f3d26856bfc83d1a101b16c99b1e7a } from 'chaipro/payload/client'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -29,18 +29,18 @@ import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
-import { MenuUrlField as MenuUrlField_cee0688190c5af4dbdf08eb6b8219786 } from '~/payload/menu/components/menu-url-field'
-import { MenuItemRowLabel as MenuItemRowLabel_da1bbd5f4fb87c0eeb310d853b5b944c } from '~/payload/menu/components/menu-item-row-label'
+import { MenuUrlField as MenuUrlField_d0f3d26856bfc83d1a101b16c99b1e7a } from 'chaipro/payload/client'
+import { MenuItemRowLabel as MenuItemRowLabel_d0f3d26856bfc83d1a101b16c99b1e7a } from 'chaipro/payload/client'
 import { Icon as Icon_534076e2c753ea5d539a54b05f456b1b } from '@/components/admin/Icon'
 import { Logo as Logo_a44df17d0fc3dcd873dae43dc3bf66bd } from '@/components/admin/Logo'
-import { IframeBridge as IframeBridge_811fa622de5d15f0ff8b98c7c76e90bc } from '~/payload/components/iframe-bridge'
+import { IframeBridge as IframeBridge_d0f3d26856bfc83d1a101b16c99b1e7a } from 'chaipro/payload/client'
 import { CustomLoginView as CustomLoginView_21ca3cc3077cf6353ee4cbc273638aa8 } from '@/components/CustomLoginView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
-  "~/payload/components/iframe-notifier#IframeNotifier": IframeNotifier_a0e15ff19475e4cb92c2d03c5339450f,
-  "~/payload/components/iframe-close-guard#IframeCloseGuard": IframeCloseGuard_7a062c6145fefcebb7cc43005f0fe03a,
+  "chaipro/payload/client#IframeNotifier": IframeNotifier_d0f3d26856bfc83d1a101b16c99b1e7a,
+  "chaipro/payload/client#IframeCloseGuard": IframeCloseGuard_d0f3d26856bfc83d1a101b16c99b1e7a,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -70,11 +70,11 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "~/payload/menu/components/menu-url-field#MenuUrlField": MenuUrlField_cee0688190c5af4dbdf08eb6b8219786,
-  "~/payload/menu/components/menu-item-row-label#MenuItemRowLabel": MenuItemRowLabel_da1bbd5f4fb87c0eeb310d853b5b944c,
+  "chaipro/payload/client#MenuUrlField": MenuUrlField_d0f3d26856bfc83d1a101b16c99b1e7a,
+  "chaipro/payload/client#MenuItemRowLabel": MenuItemRowLabel_d0f3d26856bfc83d1a101b16c99b1e7a,
   "@/components/admin/Icon#Icon": Icon_534076e2c753ea5d539a54b05f456b1b,
   "@/components/admin/Logo#Logo": Logo_a44df17d0fc3dcd873dae43dc3bf66bd,
-  "~/payload/components/iframe-bridge#IframeBridge": IframeBridge_811fa622de5d15f0ff8b98c7c76e90bc,
+  "chaipro/payload/client#IframeBridge": IframeBridge_d0f3d26856bfc83d1a101b16c99b1e7a,
   "@/components/CustomLoginView#CustomLoginView": CustomLoginView_21ca3cc3077cf6353ee4cbc273638aa8,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

@@ -44,55 +44,6 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
       },
     ],
   },
-  dam: {
-     searchImages: {
-        providers: [
-          {
-            id: 'pexels',
-            filters: {
-              orientation: ['default', 'landscape', 'portrait', 'square'],
-              size: ['default', 'large ', 'medium', 'small'],
-              color: [
-                'default',
-                'red',
-                'orange',
-                'yellow',
-                'green',
-                'turquoise',
-                'blue',
-                'violet',
-                'pink',
-                'brown',
-                'black',
-                'gray',
-                'white',
-              ],
-            },
-          },
-          {
-            id: 'unsplash',
-            filters: {
-              orientation: ['default', 'landscape', 'portrait', 'squarish'],
-              color: [
-                'default',
-                'black_and_white',
-                'black',
-                'white',
-                'yellow',
-                'orange',
-                'red',
-                'purple',
-                'magenta',
-                'green',
-                'teal',
-                'blue',
-              ],
-              order_by: ['default', 'relevant', 'latest'],
-            },
-          },
-        ],
-      }
-  },
   globalDataProvider: asChaiBuilderGlobalProvider({ slug: 'site-config' }),
   pageTypes: [
     {
@@ -111,7 +62,6 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
   features: {
     redirects: true,
     revisions: { enabled: true, drafts: true },
-    dam: { searchImages: true, genAI: true },
     animation: true,
     dragAndDrop:true,
     ai: true,
