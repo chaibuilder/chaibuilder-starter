@@ -1,5 +1,8 @@
 import type { Access, PayloadRequest } from 'payload'
-import { sql } from '@payloadcms/db-sqlite'
+import { and, eq } from 'drizzle-orm'
+import { getChaiBuilder } from 'chaipro/nextjs/server'
+import type { ChaiUserPermissionOverride } from 'chaipro/types'
+import chaiConfig from '@chaibuilder-config'
 
 /**
  * App-scoped roles live in the chaipro `app_users` table (one row per user per app),
@@ -9,6 +12,12 @@ import { sql } from '@payloadcms/db-sqlite'
  */
 export type AppRole = 'superadmin' | 'editor' | 'designer' | 'viewer' | 'user'
 
+/** The current user's membership in the current app: role plus per-user permission overrides. */
+export type AppUser = {
+  role: AppRole
+  permissions: ChaiUserPermissionOverride
+}
+
 /** Roles allowed to create/update/delete content in this app. viewer/user are read-only. */
 const WRITER_ROLES: ReadonlySet<AppRole> = new Set(['superadmin', 'editor', 'designer'])
 
@@ -16,32 +25,53 @@ const WRITER_ROLES: ReadonlySet<AppRole> = new Set(['superadmin', 'editor', 'des
 const isPlatformSuperAdmin = (req: PayloadRequest): boolean => req.user?.role === 'super_admin'
 
 /**
- * Resolve the current user's role in the current app from `app_users`. Returns null when
- * unauthenticated, no app key, or no active membership row. `app_users` is a chaipro-managed
- * Drizzle table (not a Payload collection), so it is read directly. Memoized on the request
- * so repeated access/field checks in one request hit the DB once.
+ * Resolve the current user's role + permissions in the current app from `app_users`. Returns
+ * null when unauthenticated, no app key, or no active membership row. `app_users` is a
+ * chaipro-managed Drizzle table (not a Payload collection), so it is read through the
+ * ChaiBuilder instance's `safeQuery`. Memoized on the request so repeated access/field checks
+ * in one request hit the DB once.
  */
-async function getAppRole(req: PayloadRequest): Promise<AppRole | null> {
+async function getAppUser(req: PayloadRequest): Promise<AppUser | null> {
   const user = req.user
   if (!user) return null
 
-  const cache = req as PayloadRequest & { _chaiAppRole?: Promise<AppRole | null> }
-  if (cache._chaiAppRole) return cache._chaiAppRole
+  const cache = req as PayloadRequest & { _chaiAppUser?: Promise<AppUser | null> }
+  if (cache._chaiAppUser) return cache._chaiAppUser
 
-  cache._chaiAppRole = (async () => {
+  cache._chaiAppUser = (async () => {
     const appId = process.env.CHAIBUILDER_APP_KEY
     if (!appId) return null
-    const drizzle = req.payload.db.drizzle as {
-      get: (query: unknown) => Promise<{ role?: string } | undefined>
-    }
-    const row = await drizzle.get(
-      sql`SELECT role FROM app_users WHERE "user" = ${user.id} AND app = ${appId} AND status = 'active' LIMIT 1`,
+
+    const cb = await getChaiBuilder(await chaiConfig)
+    const { data, error } = await cb.safeQuery(({ db, schema }) =>
+      db
+        .select({ role: schema.appUsers.role, permissions: schema.appUsers.permissions })
+        .from(schema.appUsers)
+        .where(
+          and(
+            eq(schema.appUsers.user, user.id),
+            eq(schema.appUsers.app, appId),
+            eq(schema.appUsers.status, 'active'),
+          ),
+        )
+        .limit(1),
     )
-    return (row?.role as AppRole | undefined) ?? null
+    if (error) throw error
+
+    const row = data?.[0]
+    if (!row?.role) return null
+    return {
+      role: row.role as AppRole,
+      permissions: (row.permissions ?? null) as ChaiUserPermissionOverride,
+    }
   })()
 
-  return cache._chaiAppRole
+  return cache._chaiAppUser
 }
+
+/** Resolve just the app role (null if not an active member). */
+const getAppRole = async (req: PayloadRequest): Promise<AppRole | null> =>
+  (await getAppUser(req))?.role ?? null
 
 /** Any authenticated Payload user. Gate for global, non-app-scoped admin surfaces. */
 export const authenticated: Access = ({ req }) => Boolean(req.user)
