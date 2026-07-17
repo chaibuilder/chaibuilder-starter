@@ -1,5 +1,8 @@
-import 'server-only'
-import '@/chai-context'
+/**
+ * ChaiBuilder configuration — plain data, deliberately free of framework imports
+ * (`next/headers` and friends) so scripts, CI, and the Payload CLI can import it.
+ * Per-request concerns — auth, tenancy, draft, site URL — live in `chaibuilder.server.ts`.
+ */
 import config from '@payload-config'
 import { createLibsqlDB } from 'chaipro/db/libsql'
 import { asChaiBuilderGlobalProvider, buildChaiBuilderConfig } from 'chaipro/payload'

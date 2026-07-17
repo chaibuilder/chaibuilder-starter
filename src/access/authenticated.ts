@@ -11,6 +11,15 @@ import type { ChaiUserPermissionOverride } from 'chaipro/types'
  */
 export type AppRole = 'admin' | 'editor' | 'designer' | 'viewer' | 'user'
 
+/**
+ * Lazy import breaks the module cycle:
+ * chaibuilder.config → collections → authenticated → chaibuilder.server → chaibuilder.config
+ */
+const getCb = async () => {
+  const { getChaiBuilder } = await import('@/chaibuilder.server')
+  return getChaiBuilder()
+}
+
 /** The current user's membership in the current app: role plus per-user permission overrides. */
 export type AppUser = {
   role: AppRole
@@ -41,9 +50,7 @@ async function getAppUser(req: PayloadRequest): Promise<AppUser | null> {
     const appId = process.env.CHAIBUILDER_APP_KEY
     if (!appId) return null
 
-    const { getChaiBuilder } = await import('chaipro/nextjs/server')
-    const { default: chaiConfig } = await import('@chaibuilder-config')
-    const cb = await getChaiBuilder(await chaiConfig)
+    const cb = await getCb()
     const { data, error } = await cb.safeQuery(({ db, schema }) =>
       db
         .select({ role: schema.appUsers.role, permissions: schema.appUsers.permissions })
@@ -113,9 +120,7 @@ export async function getAppRoleForUser(userId: string): Promise<AppRole | null>
   const appId = process.env.CHAIBUILDER_APP_KEY
   if (!appId) return null
 
-  const { getChaiBuilder } = await import('chaipro/nextjs/server')
-  const { default: chaiConfig } = await import('@chaibuilder-config')
-  const cb = await getChaiBuilder(await chaiConfig)
+  const cb = await getCb()
   const { data, error } = await cb.safeQuery(({ db, schema }) =>
     db
       .select({ role: schema.appUsers.role })
@@ -142,9 +147,7 @@ export async function setAppRoleForUser(userId: string, role: AppRole): Promise<
   const appId = process.env.CHAIBUILDER_APP_KEY
   if (!appId) throw new Error('CHAIBUILDER_APP_KEY not set')
 
-  const { getChaiBuilder } = await import('chaipro/nextjs/server')
-  const { default: chaiConfig } = await import('@chaibuilder-config')
-  const cb = await getChaiBuilder(await chaiConfig)
+  const cb = await getCb()
   const { data: existing, error: selError } = await cb.safeQuery(({ db, schema }) =>
     db
       .select({ id: schema.appUsers.id })

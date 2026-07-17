@@ -1,9 +1,6 @@
-import '@/chai-context'
-import config from '@chaibuilder-config'
+import { getChaiBuilder } from '@/chaibuilder.server'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { draftMode } from 'next/headers'
-import { getChaiBuilder } from 'chaipro/nextjs/server'
 import { ChaiPageCSS, RenderChaiBlocks } from 'chaipro/nextjs/render'
 import { PreviewBanner } from 'chaipro/nextjs/render-client'
 import { ChaiAnimationProvider } from 'chaipro/nextjs/render-client'
@@ -28,7 +25,7 @@ const getSlugFromParams = (slug?: string[]) =>
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const { slug: slugParams } = await props.params
   const slug = getSlugFromParams(slugParams)
-  const cb = await getChaiBuilder(config, props)
+  const cb = await getChaiBuilder(props)
   const metadataPayload = await cb.getPageMetadataPayload(slug)
   return await cb.generateMetaData(metadataPayload)
 }
@@ -36,9 +33,9 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
 export default async function Page(props: PageProps) {
   const { slug: slugParams } = await props.params
   const slug = getSlugFromParams(slugParams)
-  const cb = await getChaiBuilder(config, props)
+  const cb = await getChaiBuilder(props)
 
-
+  return cb.runPageRender(slug, async () => {
     const { isEnabled } = await cb.withRenderPhase('draftMode', () => draftMode())
 
     const { page, settings, pageData, pageProps } = await cb.getPagePayload(slug)
@@ -52,8 +49,9 @@ export default async function Page(props: PageProps) {
           <PreviewBanner show={isEnabled} />
           <ChaiAnimationProvider>
             <RenderChaiBlocks pageData={pageData} settings={settings} page={page} pageProps={pageProps} />
-        </ChaiAnimationProvider>
+          </ChaiAnimationProvider>
         </body>
       </html>
     )
+  })
 }

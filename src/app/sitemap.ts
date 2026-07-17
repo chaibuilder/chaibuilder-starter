@@ -1,10 +1,9 @@
-import '@/chai-context'
+import { getChaiBuilder } from '@/chaibuilder.server'
 import chaiConfig from '@chaibuilder-config'
 import payloadConfig from '@payload-config'
 import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import { getServerSideURL } from '@/utilities/getURL'
-import { getChaiBuilder } from 'chaipro/nextjs/server'
 import { appWhere, hasSlugField, resolveAppId } from 'chaipro/payload'
 
 const EXCLUDE_COLLECTIONS = ['users', 'media']
@@ -55,7 +54,7 @@ export function mergeSitemapEntries(entryGroups: MetadataRoute.Sitemap[]): Metad
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const localConfig = await chaiConfig
   const payloadCfg = await payloadConfig
-  const cb = await getChaiBuilder(localConfig)
+  const cb = await getChaiBuilder()
 
   const pages = await cb.getPages('live', {
     fields: ['slug', 'updatedAt', 'dynamic', 'lang'],
