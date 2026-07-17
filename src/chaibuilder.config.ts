@@ -19,7 +19,7 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
     url: process.env.DATABASE_URL!,
     authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
   }),
-  debugLevel: process.env.NODE_ENV === 'development' ? 1 : 0,
+  debugLevel: 1,
   ai: {
     models: [
       {
