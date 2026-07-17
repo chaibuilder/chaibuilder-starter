@@ -41,8 +41,8 @@ importers:
         specifier: ^0.5.11
         version: 0.5.11(tailwindcss@4.3.3)
       chaipro:
-        specifier: 0.1.13
-        version: 0.1.13(5c09bad5cccb96fa0d03dca3cd92ba58)
+        specifier: 0.1.14
+        version: 0.1.14(5c09bad5cccb96fa0d03dca3cd92ba58)
       cnfast:
         specifier: ^0.0.8
         version: 0.0.8
@@ -3666,8 +3666,8 @@ packages:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
 
-  chaipro@0.1.13:
-    resolution: {integrity: sha512-fZ/zj+NcqtHV2zwuPVVMyAp3T2GWohbX/7U3hCUIF/eQUauj9ujLpu4Zf/tEl+8bQegBqqg5At5BubRzZ9BZ1Q==}
+  chaipro@0.1.14:
+    resolution: {integrity: sha512-xKPSV39KLa3O/yM2z3rciX17gHNR9MhXkpRwV02GO9bwcmKfm5IJBUKncht2BO7eLt4UGKuiQcVEqEl3Mhp1BA==}
     hasBin: true
     peerDependencies:
       '@libsql/client': '>=0.14.0'
@@ -7894,7 +7894,7 @@ snapshots:
 
   '@floating-ui/react-dom@2.1.6(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@floating-ui/dom': 1.7.4
+      '@floating-ui/dom': 1.8.0
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
 
@@ -9021,7 +9021,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.2.14)(react@19.2.6)
       '@radix-ui/react-context': 1.1.2(@types/react@19.2.14)(react@19.2.6)
@@ -9491,7 +9491,7 @@ snapshots:
       '@types/react': 19.2.14
       '@types/react-dom': 19.2.3(@types/react@19.2.14)
       lodash.merge: 4.6.2
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
       styled-components: 6.4.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -10544,7 +10544,7 @@ snapshots:
 
   chai@6.2.2: {}
 
-  chaipro@0.1.13(5c09bad5cccb96fa0d03dca3cd92ba58):
+  chaipro@0.1.14(5c09bad5cccb96fa0d03dca3cd92ba58):
     dependencies:
       '@ai-sdk/react': 3.0.221(react@19.2.6)(zod@4.3.5)
       '@floating-ui/dom': 1.7.4
@@ -13056,7 +13056,7 @@ snapshots:
 
   motion-dom@12.23.20:
     dependencies:
-      motion-utils: 12.23.6
+      motion-utils: 12.39.0
 
   motion-dom@12.42.2:
     dependencies:
