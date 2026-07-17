@@ -1,4 +1,4 @@
-import 'server-only'
+import './server-guard'
 import '@/chai-context'
 import config from '@payload-config'
 import { createLibsqlDB } from 'chaipro/db/libsql'

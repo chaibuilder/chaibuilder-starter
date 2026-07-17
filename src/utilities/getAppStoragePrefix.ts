@@ -1,4 +1,4 @@
-import 'server-only'
+import '../server-guard'
 import { createHash } from 'node:crypto'
 
 /**

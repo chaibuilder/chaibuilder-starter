@@ -41,8 +41,8 @@ importers:
         specifier: ^0.5.11
         version: 0.5.11(tailwindcss@4.3.2)
       chaipro:
-        specifier: 0.1.9
-        version: 0.1.9(b428aeaae4139b8ff3315304506967fc)
+        specifier: 0.1.10
+        version: 0.1.10(54d0c35925be1fefa5d11f74325d164b)
       cnfast:
         specifier: ^0.0.8
         version: 0.0.8
@@ -3880,8 +3880,8 @@ packages:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
 
-  chaipro@0.1.9:
-    resolution: {integrity: sha512-mIPRj45Xmzd/xVquuyljJ5oV5j/7dexWajJNVMlwQCwm5h9Rp9lViLA3DxSGvEYywGH9SRd+eyeLBDPPZkI+Sg==}
+  chaipro@0.1.10:
+    resolution: {integrity: sha512-XWEUe7HDnLoM2DT5KoZSoVqH6FLrkWEBdqaQoYJncse1D+zuDrYGyMTCxzdjr3zqk4xzyPvUMThTSr4k5iTwNg==}
     hasBin: true
     peerDependencies:
       '@libsql/client': '>=0.14.0'
@@ -7617,12 +7617,12 @@ snapshots:
       '@vercel/oidc': 3.2.0
       zod: 4.3.5
 
-  '@ai-sdk/gateway@3.0.148(zod@4.3.5)':
+  '@ai-sdk/gateway@3.0.148(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.14
-      '@ai-sdk/provider-utils': 4.0.38(zod@4.3.5)
+      '@ai-sdk/provider-utils': 4.0.38(zod@4.4.3)
       '@vercel/oidc': 3.2.0
-      zod: 4.3.5
+      zod: 4.4.3
     optional: true
 
   '@ai-sdk/provider-utils@4.0.35(zod@4.3.5)':
@@ -7632,12 +7632,12 @@ snapshots:
       eventsource-parser: 3.1.0
       zod: 4.3.5
 
-  '@ai-sdk/provider-utils@4.0.38(zod@4.3.5)':
+  '@ai-sdk/provider-utils@4.0.38(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.14
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.1.0
-      zod: 4.3.5
+      zod: 4.4.3
     optional: true
 
   '@ai-sdk/provider@3.0.13':
@@ -10956,13 +10956,13 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       zod: 4.3.5
 
-  ai@6.0.224(zod@4.3.5):
+  ai@6.0.224(zod@4.4.3):
     dependencies:
-      '@ai-sdk/gateway': 3.0.148(zod@4.3.5)
+      '@ai-sdk/gateway': 3.0.148(zod@4.4.3)
       '@ai-sdk/provider': 3.0.14
-      '@ai-sdk/provider-utils': 4.0.38(zod@4.3.5)
+      '@ai-sdk/provider-utils': 4.0.38(zod@4.4.3)
       '@opentelemetry/api': 1.9.1
-      zod: 4.3.5
+      zod: 4.4.3
     optional: true
 
   ajv-formats@2.1.1(ajv@8.20.0):
@@ -11220,7 +11220,7 @@ snapshots:
 
   chai@6.2.2: {}
 
-  chaipro@0.1.9(b428aeaae4139b8ff3315304506967fc):
+  chaipro@0.1.10(54d0c35925be1fefa5d11f74325d164b):
     dependencies:
       '@ai-sdk/react': 3.0.221(react@19.2.6)(zod@4.3.5)
       '@floating-ui/dom': 1.7.4
@@ -11312,7 +11312,6 @@ snapshots:
       react-hotkeys-hook: 5.2.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react-i18next: 16.0.0(i18next@25.5.2(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
       react-wrap-balancer: 1.1.1(react@19.2.6)
-      server-only: 0.0.1
       sonner: 2.0.7(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       streamdown: 2.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       tailwind-merge: 3.6.0
@@ -11328,7 +11327,7 @@ snapshots:
       '@payloadcms/richtext-lexical': 3.85.1(@faceless-ui/modal@3.0.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@payloadcms/next@3.85.1(@types/react@19.2.14)(graphql@16.14.2)(monaco-editor@0.55.1)(next@16.2.9(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.85.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3))(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.9(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.85.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)(yjs@13.6.31)
       '@payloadcms/ui': 3.85.1(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.9(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.85.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
       '@tailwindcss/postcss': 4.3.2
-      ai: 6.0.224(zod@4.3.5)
+      ai: 6.0.224(zod@4.4.3)
       autoprefixer: 10.4.20(postcss@8.5.17)
       better-sqlite3: 12.11.1
       drizzle-orm: 0.45.2(@libsql/client@0.14.0)(@opentelemetry/api@1.9.1)(@types/better-sqlite3@7.6.13)(@types/pg@8.20.0)(better-sqlite3@12.11.1)(pg@8.22.0)(postgres@3.4.9)
