@@ -44,17 +44,23 @@ async function userIdFromCookies(): Promise<string | null> {
  * coupling so `chaibuilder.config.ts` stays environment-agnostic.
  */
 export const chaiContextResolver: ChaiContextResolver = async ({ request }) => {
-  const { isEnabled } = await draftMode()
-  const [userId, siteUrl] = await Promise.all([
-    request ? userIdFromRequest(request) : userIdFromCookies(),
-    resolveSiteUrl(request),
-  ])
+  // draftMode()/cookies()/headers() throw outside a Next.js request scope
+  // (e.g. CLI seeding, scripts). Degrade to a static, request-free context there.
+  try {
+    const { isEnabled } = await draftMode()
+    const [userId, siteUrl] = await Promise.all([
+      request ? userIdFromRequest(request) : userIdFromCookies(),
+      resolveSiteUrl(request),
+    ])
 
-  return {
-    appId: appId(),
-    siteUrl,
-    draft: isEnabled,
-    userId,
+    return {
+      appId: appId(),
+      siteUrl,
+      draft: isEnabled,
+      userId,
+    }
+  } catch {
+    return { appId: appId(), siteUrl: null, draft: false, userId: null }
   }
 }
 
