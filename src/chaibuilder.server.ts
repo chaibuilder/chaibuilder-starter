@@ -1,4 +1,8 @@
 import config from '@/chaibuilder.config'
+// Side-effect import: registers the Next.js framework adapter (unstable_cache,
+// revalidatePath, revalidateTag). Without it the adapter stays a noop and
+// publish-time cache revalidation silently does nothing in production builds.
+import 'chaipro/nextjs/server'
 import { createPayloadChaiBuilder } from 'chaipro/payload'
 
 /**
