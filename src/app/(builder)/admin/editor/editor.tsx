@@ -16,7 +16,7 @@ import { logoutAction } from '@/app/(builder)/admin/actions/logout'
 import { adminUrl } from '@/utilities/adminRoute'
 import { registerCustomBlocks } from '@/blocks'
 
-// Mirrors the server list in src/chaibuilder.plugins.ts — only these feature
+// Mirrors the server list in src/chaibuilder.config.ts — only these feature
 // UIs ship in the editor bundle. One import per plugin (not the
 // `chaipro/plugins/client` barrel) so an unused feature UI cannot reach the
 // chunk. media/form-submissions have no client UI; pageErrors is client-only
