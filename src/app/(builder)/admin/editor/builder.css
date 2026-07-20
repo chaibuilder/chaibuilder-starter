@@ -9,6 +9,7 @@
 @source "../../../../components/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../app/(builder)/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../../node_modules/chaipro/dist/**/*.{js,mjs,cjs}";
+
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -91,8 +92,8 @@
       Arial,
       Apple Color Emoji,
       Segoe UI Emoji,
-      Segoe UI Symbol;
-    pointer-events: auto;
+      Segoe UI Symbol !important;
+    pointer-events: auto !important;
   }
   * {
     @apply border-border outline-ring/50;
@@ -103,21 +104,14 @@
   html {
     @apply font-sans;
   }
-}
-
-@utility text-balance {
-  text-wrap: balance;
-}
-
-@utility no-scrollbar {
-  &::-webkit-scrollbar {
-    display: none;
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    color: white;
   }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 
-@layer base {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
@@ -150,6 +144,18 @@
   ::-webkit-scrollbar-corner {
     background: transparent;
   }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 :root {
@@ -225,28 +231,6 @@
 }
 
 /** BUILDER CSS **/
-
-html,
-body {
-  font-family:
-    "Inter",
-    "Inter Fallback",
-    Arial,
-    Apple Color Emoji,
-    Segoe UI Emoji,
-    Segoe UI Symbol !important;
-  pointer-events: auto !important;
-}
-
-@layer base {
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    color: white;
-  }
-}
 
 .sheet-hide-close-btn > button {
   display: none !important;
@@ -449,6 +433,13 @@ select:focus {
   z-index: 10002 !important;
 }
 
+/*
+*
+*
+*  RICH TEXT EDITOR
+*
+*
+*/
 .ProseMirror {
   @apply min-h-[100px] outline-none;
 }
@@ -503,38 +494,4 @@ select:focus {
 */
 #chai-image-editor-container > button {
   display: none !important;
-}
-
-/*
-*
-*
-*  SCROLLBAR STYLE
-*
-*
-*/
-* {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--muted-foreground) / 0.25) transparent;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.25);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.4);
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
 }
