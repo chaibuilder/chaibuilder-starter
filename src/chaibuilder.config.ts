@@ -7,6 +7,7 @@ import config from '@payload-config'
 import { createLibsqlDB } from 'chaipro/db/libsql'
 import { asChaiBuilderGlobalProvider, buildChaiBuilderConfig } from 'chaipro/payload'
 import type { ResolvedChaiBuilderServerConfig } from 'chaipro/types'
+import { chaiServerPlugins } from './chaibuilder.plugins'
 
 import { Blog } from '@/collections/Blog'
 import { Legal } from '@/collections/Legal'
@@ -19,6 +20,8 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
     url: process.env.DATABASE_URL!,
     authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
   }),
+  // Registered plugins define the feature set; options carry each feature's config.
+  plugins: chaiServerPlugins,
   ai: {
     models: [
       {
@@ -61,14 +64,6 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
       dataProviderDepth: 2,
     },
   ],
-  features: {
-    redirects: true,
-    revisions: { enabled: true, drafts: true },
-    animation: true,
-    dragAndDrop:true,
-    ai: true,
-    trash:true
-  },
   collections: [Blog, Legal, Testimonials, Faqs],
 })
 
