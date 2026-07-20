@@ -28,7 +28,7 @@ export const chaiServerPlugins: ChaiServerPlugin[] = [
         id: 'pexels',
         filters: {
           orientation: ['default', 'landscape', 'portrait', 'square'],
-          size: ['default', 'large ', 'medium', 'small'],
+          size: ['default', 'large', 'medium', 'small'],
           color: [
             'default',
             'red',
