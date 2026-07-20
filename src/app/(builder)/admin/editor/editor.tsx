@@ -1,13 +1,34 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 import { defaultChaiLibrary, registerChaiLibrary } from 'chaipro'
 import { ChaiWebsiteBuilder } from 'chaipro/payload/builder'
+import { aiProClientPlugin } from 'chaipro/plugins/ai-pro/client'
+import { animationClientPlugin } from 'chaipro/plugins/animation/client'
+import { pageErrorsClientPlugin } from 'chaipro/plugins/page-errors/client'
+import { redirectsClientPlugin } from 'chaipro/plugins/redirects/client'
+import { revisionsClientPlugin } from 'chaipro/plugins/revisions/client'
+import { trashClientPlugin } from 'chaipro/plugins/trash/client'
 import { registerProjectFonts } from '@/fonts'
 import { logoutAction } from '@/app/(builder)/admin/actions/logout'
 import { adminUrl } from '@/utilities/adminRoute'
 import { registerCustomBlocks } from '@/blocks'
+
+// Mirrors the server list in src/chaibuilder.config.ts — only these feature
+// UIs ship in the editor bundle. One import per plugin (not the
+// `chaipro/plugins/client` barrel) so an unused feature UI cannot reach the
+// chunk. media/form-submissions have no client UI; pageErrors is client-only
+// (no server counterpart).
+const chaiClientPlugins = [
+  redirectsClientPlugin,
+  trashClientPlugin,
+  aiProClientPlugin,
+  pageErrorsClientPlugin,
+  revisionsClientPlugin,
+  animationClientPlugin,
+]
+
 registerProjectFonts()
 registerCustomBlocks()
 registerChaiLibrary('chai-library', defaultChaiLibrary())
@@ -30,6 +51,7 @@ export default function Editor({ accessToken }: { accessToken: string }) {
         }}
         autoSave
         autoSaveActionsCount={5}
+        plugins={chaiClientPlugins}
         getAccessToken={getAccessToken}
         apiUrl="api"
         getPreviewUrl={getPreviewUrl}

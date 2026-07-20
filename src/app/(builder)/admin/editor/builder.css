@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "react-diff-view/style/index.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -8,8 +7,7 @@
 
 @source "../../../../blocks/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../components/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../../../../app/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../../../../payload-bridge/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../../../../app/(builder)/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../../node_modules/chaipro/dist/**/*.{js,mjs,cjs}";
 @theme {
   --color-border: hsl(var(--border));
@@ -240,12 +238,14 @@ body {
   pointer-events: auto !important;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: white;
+@layer base {
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    color: white;
+  }
 }
 
 .sheet-hide-close-btn > button {

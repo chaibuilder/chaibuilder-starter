@@ -5,7 +5,17 @@
  */
 import config from '@payload-config'
 import { createLibsqlDB } from 'chaipro/db/libsql'
-import { asChaiBuilderGlobalProvider, buildChaiBuilderConfig } from 'chaipro/payload'
+import {
+  asChaiBuilderGlobalProvider,
+  buildChaiBuilderConfig,
+  payloadMediaPlugin,
+} from 'chaipro/payload'
+import { aiProPlugin } from 'chaipro/plugins/ai-pro/server'
+import { animationPlugin } from 'chaipro/plugins/animation/server'
+import { mediaSearchPlugin } from 'chaipro/plugins/media-search/server'
+import { redirectsPlugin } from 'chaipro/plugins/redirects/server'
+import { revisionsPlugin } from 'chaipro/plugins/revisions/server'
+import { trashPlugin } from 'chaipro/plugins/trash/server'
 import type { ResolvedChaiBuilderServerConfig } from 'chaipro/types'
 
 import { Blog } from '@/collections/Blog'
@@ -19,6 +29,71 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
     url: process.env.DATABASE_URL!,
     authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
   }),
+  // Registering a plugin enables its feature; options carry the feature's config.
+  // Plugin tables are NOT gated here — `chaiBuilderSchemaHookSqlite` injects the
+  // full ChaiBuilder schema, so every plugin's tables exist (empty when
+  // unregistered) and enabling a plugin later needs no migration.
+  // Not registered: aiCreditsPlugin (credit billing), multilingualPlugin,
+  // tenancyPlugin (core pins a single app), plansPlugin, licensingPlugin,
+  // rolesPlugin (DB-backed roles), layoutPlugin, formSubmissionsPlugin (this
+  // starter writes submissions to its own Payload collection).
+  plugins: [
+    // Payload-backed DAM (asset actions + media trash entity). Non-Payload
+    // hosts would register mediaPlugin({ storage }) instead.
+    payloadMediaPlugin(),
+    redirectsPlugin(),
+    trashPlugin(),
+    mediaSearchPlugin({
+      providers: [
+        {
+          id: 'pexels',
+          filters: {
+            orientation: ['default', 'landscape', 'portrait', 'square'],
+            size: ['default', 'large', 'medium', 'small'],
+            color: [
+              'default',
+              'red',
+              'orange',
+              'yellow',
+              'green',
+              'turquoise',
+              'blue',
+              'violet',
+              'pink',
+              'brown',
+              'black',
+              'gray',
+              'white',
+            ],
+          },
+        },
+        {
+          id: 'unsplash',
+          filters: {
+            orientation: ['default', 'landscape', 'portrait', 'squarish'],
+            color: [
+              'default',
+              'black_and_white',
+              'black',
+              'white',
+              'yellow',
+              'orange',
+              'red',
+              'purple',
+              'magenta',
+              'green',
+              'teal',
+              'blue',
+            ],
+            order_by: ['default', 'relevant', 'latest'],
+          },
+        },
+      ],
+    }),
+    aiProPlugin(),
+    revisionsPlugin({ drafts: true, maxRevisions: 10 }),
+    animationPlugin(),
+  ],
   ai: {
     models: [
       {
@@ -61,14 +136,6 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
       dataProviderDepth: 2,
     },
   ],
-  features: {
-    redirects: true,
-    revisions: { enabled: true, drafts: true },
-    animation: true,
-    dragAndDrop:true,
-    ai: true,
-    trash:true
-  },
   collections: [Blog, Legal, Testimonials, Faqs],
 })
 
