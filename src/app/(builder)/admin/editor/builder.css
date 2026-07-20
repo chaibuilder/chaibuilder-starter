@@ -7,7 +7,7 @@
 
 @source "../../../../blocks/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../components/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../../../../app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../../../../app/(builder)/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../../../../node_modules/chaipro/dist/**/*.{js,mjs,cjs}";
 @theme {
   --color-border: hsl(var(--border));
