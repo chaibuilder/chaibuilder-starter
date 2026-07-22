@@ -142,21 +142,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   );
   `)
   await db.run(sql`CREATE INDEX \`idx_app_pages_app_slug\` ON \`app_pages\` (\`app\`,\`slug\`);`)
-  await db.run(sql`CREATE TABLE \`app_pages_metadata\` (
-  	\`id\` integer,
-  	\`created_at\` text DEFAULT (datetime('now')) NOT NULL,
-  	\`slug\` text NOT NULL,
-  	\`pageId\` text,
-  	\`publishedAt\` text,
-  	\`pageType\` text,
-  	\`pageBlocks\` text,
-  	\`dataBindings\` text,
-  	\`pageContent\` text,
-  	\`dataProviders\` text,
-  	\`app\` text NOT NULL,
-  	PRIMARY KEY(\`slug\`, \`app\`)
-  );
-  `)
   await db.run(sql`CREATE TABLE \`app_pages_online\` (
   	\`createdAt\` text DEFAULT (datetime('now')) NOT NULL,
   	\`slug\` text NOT NULL,
@@ -701,130 +686,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`_legal_v_version_version_slug_idx\` ON \`_legal_v_locales\` (\`version_slug\`,\`_locale\`);`)
   await db.run(sql`CREATE INDEX \`_legal_v_version_meta_version_meta_image_idx\` ON \`_legal_v_locales\` (\`version_meta_image_id\`,\`_locale\`);`)
   await db.run(sql`CREATE UNIQUE INDEX \`_legal_v_locales_locale_parent_id_unique\` ON \`_legal_v_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`faqs\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`app\` text,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`_status\` text DEFAULT 'draft'
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`faqs_updated_at_idx\` ON \`faqs\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`faqs_created_at_idx\` ON \`faqs\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`faqs__status_idx\` ON \`faqs\` (\`_status\`);`)
-  await db.run(sql`CREATE TABLE \`faqs_locales\` (
-  	\`question\` text,
-  	\`answer\` text DEFAULT '{"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"","version":1}],"direction":null,"format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":null,"format":"","indent":0,"version":1}}',
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`faqs\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE UNIQUE INDEX \`faqs_locales_locale_parent_id_unique\` ON \`faqs_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`_faqs_v\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`parent_id\` text(36),
-  	\`version_app\` text,
-  	\`version_updated_at\` text,
-  	\`version_created_at\` text,
-  	\`version__status\` text DEFAULT 'draft',
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`snapshot\` integer,
-  	\`published_locale\` text,
-  	\`latest\` integer,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`faqs\`(\`id\`) ON UPDATE no action ON DELETE set null
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`_faqs_v_parent_idx\` ON \`_faqs_v\` (\`parent_id\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_version_version_updated_at_idx\` ON \`_faqs_v\` (\`version_updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_version_version_created_at_idx\` ON \`_faqs_v\` (\`version_created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_version_version__status_idx\` ON \`_faqs_v\` (\`version__status\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_created_at_idx\` ON \`_faqs_v\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_updated_at_idx\` ON \`_faqs_v\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_snapshot_idx\` ON \`_faqs_v\` (\`snapshot\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_published_locale_idx\` ON \`_faqs_v\` (\`published_locale\`);`)
-  await db.run(sql`CREATE INDEX \`_faqs_v_latest_idx\` ON \`_faqs_v\` (\`latest\`);`)
-  await db.run(sql`CREATE TABLE \`_faqs_v_locales\` (
-  	\`version_question\` text,
-  	\`version_answer\` text DEFAULT '{"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"","version":1}],"direction":null,"format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":null,"format":"","indent":0,"version":1}}',
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`_faqs_v\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE UNIQUE INDEX \`_faqs_v_locales_locale_parent_id_unique\` ON \`_faqs_v_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`testimonials\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`app\` text,
-  	\`avatar_id\` text(36),
-  	\`rating\` numeric,
-  	\`social_link\` text,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`_status\` text DEFAULT 'draft',
-  	FOREIGN KEY (\`avatar_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`testimonials_avatar_idx\` ON \`testimonials\` (\`avatar_id\`);`)
-  await db.run(sql`CREATE INDEX \`testimonials_updated_at_idx\` ON \`testimonials\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`testimonials_created_at_idx\` ON \`testimonials\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`testimonials__status_idx\` ON \`testimonials\` (\`_status\`);`)
-  await db.run(sql`CREATE TABLE \`testimonials_locales\` (
-  	\`name\` text,
-  	\`designation\` text,
-  	\`company\` text,
-  	\`message\` text,
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`testimonials\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE UNIQUE INDEX \`testimonials_locales_locale_parent_id_unique\` ON \`testimonials_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`_testimonials_v\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`parent_id\` text(36),
-  	\`version_app\` text,
-  	\`version_avatar_id\` text(36),
-  	\`version_rating\` numeric,
-  	\`version_social_link\` text,
-  	\`version_updated_at\` text,
-  	\`version_created_at\` text,
-  	\`version__status\` text DEFAULT 'draft',
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`snapshot\` integer,
-  	\`published_locale\` text,
-  	\`latest\` integer,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`testimonials\`(\`id\`) ON UPDATE no action ON DELETE set null,
-  	FOREIGN KEY (\`version_avatar_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_parent_idx\` ON \`_testimonials_v\` (\`parent_id\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_version_version_avatar_idx\` ON \`_testimonials_v\` (\`version_avatar_id\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_version_version_updated_at_idx\` ON \`_testimonials_v\` (\`version_updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_version_version_created_at_idx\` ON \`_testimonials_v\` (\`version_created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_version_version__status_idx\` ON \`_testimonials_v\` (\`version__status\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_created_at_idx\` ON \`_testimonials_v\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_updated_at_idx\` ON \`_testimonials_v\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_snapshot_idx\` ON \`_testimonials_v\` (\`snapshot\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_published_locale_idx\` ON \`_testimonials_v\` (\`published_locale\`);`)
-  await db.run(sql`CREATE INDEX \`_testimonials_v_latest_idx\` ON \`_testimonials_v\` (\`latest\`);`)
-  await db.run(sql`CREATE TABLE \`_testimonials_v_locales\` (
-  	\`version_name\` text,
-  	\`version_designation\` text,
-  	\`version_company\` text,
-  	\`version_message\` text,
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`_testimonials_v\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE UNIQUE INDEX \`_testimonials_v_locales_locale_parent_id_unique\` ON \`_testimonials_v_locales\` (\`_locale\`,\`_parent_id\`);`)
   await db.run(sql`CREATE TABLE \`media\` (
   	\`id\` text(36) PRIMARY KEY NOT NULL,
   	\`app\` text NOT NULL,
@@ -1143,8 +1004,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`blog_id\` text(36),
   	\`blog_categories_id\` text(36),
   	\`legal_id\` text(36),
-  	\`faqs_id\` text(36),
-  	\`testimonials_id\` text(36),
   	\`media_id\` text(36),
   	\`site_config_id\` text(36),
   	\`form_submissions_id\` text(36),
@@ -1154,8 +1013,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	FOREIGN KEY (\`blog_id\`) REFERENCES \`blog\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`blog_categories_id\`) REFERENCES \`blog_categories\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`legal_id\`) REFERENCES \`legal\`(\`id\`) ON UPDATE no action ON DELETE cascade,
-  	FOREIGN KEY (\`faqs_id\`) REFERENCES \`faqs\`(\`id\`) ON UPDATE no action ON DELETE cascade,
-  	FOREIGN KEY (\`testimonials_id\`) REFERENCES \`testimonials\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`media_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`site_config_id\`) REFERENCES \`site_config\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`form_submissions_id\`) REFERENCES \`form_submissions\`(\`id\`) ON UPDATE no action ON DELETE cascade,
@@ -1169,8 +1026,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_blog_id_idx\` ON \`payload_locked_documents_rels\` (\`blog_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_blog_categories_id_idx\` ON \`payload_locked_documents_rels\` (\`blog_categories_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_legal_id_idx\` ON \`payload_locked_documents_rels\` (\`legal_id\`);`)
-  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_faqs_id_idx\` ON \`payload_locked_documents_rels\` (\`faqs_id\`);`)
-  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_testimonials_id_idx\` ON \`payload_locked_documents_rels\` (\`testimonials_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_media_id_idx\` ON \`payload_locked_documents_rels\` (\`media_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_site_config_id_idx\` ON \`payload_locked_documents_rels\` (\`site_config_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_form_submissions_id_idx\` ON \`payload_locked_documents_rels\` (\`form_submissions_id\`);`)
@@ -1221,7 +1076,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`app_domains\`;`)
   await db.run(sql`DROP TABLE \`app_form_submissions\`;`)
   await db.run(sql`DROP TABLE \`app_pages\`;`)
-  await db.run(sql`DROP TABLE \`app_pages_metadata\`;`)
   await db.run(sql`DROP TABLE \`app_pages_online\`;`)
   await db.run(sql`DROP TABLE \`app_pages_revisions\`;`)
   await db.run(sql`DROP TABLE \`app_redirects\`;`)
@@ -1255,14 +1109,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`legal_locales\`;`)
   await db.run(sql`DROP TABLE \`_legal_v\`;`)
   await db.run(sql`DROP TABLE \`_legal_v_locales\`;`)
-  await db.run(sql`DROP TABLE \`faqs\`;`)
-  await db.run(sql`DROP TABLE \`faqs_locales\`;`)
-  await db.run(sql`DROP TABLE \`_faqs_v\`;`)
-  await db.run(sql`DROP TABLE \`_faqs_v_locales\`;`)
-  await db.run(sql`DROP TABLE \`testimonials\`;`)
-  await db.run(sql`DROP TABLE \`testimonials_locales\`;`)
-  await db.run(sql`DROP TABLE \`_testimonials_v\`;`)
-  await db.run(sql`DROP TABLE \`_testimonials_v_locales\`;`)
   await db.run(sql`DROP TABLE \`media\`;`)
   await db.run(sql`DROP TABLE \`media_locales\`;`)
   await db.run(sql`DROP TABLE \`site_config_social_links\`;`)

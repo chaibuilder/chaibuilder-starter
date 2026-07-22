@@ -20,8 +20,6 @@ import type { ResolvedChaiBuilderServerConfig } from 'chaipro/types'
 
 import { Blog } from '@/collections/Blog'
 import { Legal } from '@/collections/Legal'
-import { Testimonials } from './collections/Testimonials'
-import { Faqs } from './collections/Faqs'
 
 const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderConfig({
   payloadConfig: config,
@@ -136,7 +134,7 @@ const chaiConfig: Readonly<ResolvedChaiBuilderServerConfig> = buildChaiBuilderCo
       dataProviderDepth: 2,
     },
   ],
-  collections: [Blog, Legal, Testimonials, Faqs],
+  collections: [Blog, Legal],
 })
 
 export default chaiConfig
