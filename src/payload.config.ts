@@ -10,8 +10,6 @@ import { Legal } from './collections/Legal'
 import { BlogCategories } from './collections/BlogCategories'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
-import { Faqs } from './collections/Faqs'
-import { Testimonials } from './collections/Testimonials'
 import { SiteConfig } from './collections/SiteConfig'
 import { FormSubmissions } from './collections/FormSubmissions'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -76,8 +74,6 @@ export default buildConfig({
     Blog,
     BlogCategories,
     Legal,
-    Faqs,
-    Testimonials,
     Media,
     SiteConfig,
     FormSubmissions,
@@ -114,8 +110,6 @@ export default buildConfig({
         'blog',
         'blog-categories',
         'legal',
-        'faqs',
-        'testimonials',
         'media',
         'site-config',
         'form-submissions',

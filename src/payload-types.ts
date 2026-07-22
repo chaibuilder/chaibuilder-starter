@@ -71,8 +71,6 @@ export interface Config {
     blog: Blog;
     'blog-categories': BlogCategory;
     legal: Legal;
-    faqs: Faq;
-    testimonials: Testimonial;
     media: Media;
     'site-config': SiteConfig;
     'form-submissions': FormSubmission;
@@ -88,8 +86,6 @@ export interface Config {
     blog: BlogSelect<false> | BlogSelect<true>;
     'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
-    faqs: FaqsSelect<false> | FaqsSelect<true>;
-    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -280,51 +276,6 @@ export interface Legal {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs".
- */
-export interface Faq {
-  id: string;
-  app: string;
-  question: string;
-  answer?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: string;
-  app: string;
-  name: string;
-  designation?: string | null;
-  company?: string | null;
-  message: string;
-  avatar?: (string | null) | Media;
-  rating?: number | null;
-  socialLink?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
  * This is site config data available on all pages. To be used with data binding.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -490,14 +441,6 @@ export interface PayloadLockedDocument {
         value: string | Legal;
       } | null)
     | ({
-        relationTo: 'faqs';
-        value: string | Faq;
-      } | null)
-    | ({
-        relationTo: 'testimonials';
-        value: string | Testimonial;
-      } | null)
-    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -633,35 +576,6 @@ export interface LegalSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs_select".
- */
-export interface FaqsSelect<T extends boolean = true> {
-  app?: T;
-  question?: T;
-  answer?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials_select".
- */
-export interface TestimonialsSelect<T extends boolean = true> {
-  app?: T;
-  name?: T;
-  designation?: T;
-  company?: T;
-  message?: T;
-  avatar?: T;
-  rating?: T;
-  socialLink?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
