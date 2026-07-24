@@ -70,7 +70,6 @@ export interface Config {
     users: User;
     blog: Blog;
     'blog-categories': BlogCategory;
-    legal: Legal;
     media: Media;
     'site-config': SiteConfig;
     'form-submissions': FormSubmission;
@@ -85,7 +84,6 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     blog: BlogSelect<false> | BlogSelect<true>;
     'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
-    legal: LegalSelect<false> | LegalSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -235,42 +233,6 @@ export interface BlogCategory {
   name: string;
   slug: string;
   description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "legal".
- */
-export interface Legal {
-  id: string;
-  app: string;
-  slug: string;
-  title: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -437,10 +399,6 @@ export interface PayloadLockedDocument {
         value: string | BlogCategory;
       } | null)
     | ({
-        relationTo: 'legal';
-        value: string | Legal;
-      } | null)
-    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -556,26 +514,6 @@ export interface BlogCategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   description?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "legal_select".
- */
-export interface LegalSelect<T extends boolean = true> {
-  app?: T;
-  slug?: T;
-  title?: T;
-  content?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

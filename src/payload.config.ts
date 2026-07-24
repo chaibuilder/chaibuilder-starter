@@ -1,18 +1,17 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { chaiBuilderPlugin, chaiBuilderSchemaHookSqlite } from 'chaipro/payload'
 import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-import { chaiBuilderPlugin, chaiBuilderSchemaHookSqlite } from 'chaipro/payload'
 import { Blog } from './collections/Blog'
-import { Legal } from './collections/Legal'
 import { BlogCategories } from './collections/BlogCategories'
-import { Media } from './collections/Media'
-import { Users } from './collections/Users'
-import { SiteConfig } from './collections/SiteConfig'
 import { FormSubmissions } from './collections/FormSubmissions'
-import { seoPlugin } from '@payloadcms/plugin-seo'
+import { Media } from './collections/Media'
+import { SiteConfig } from './collections/SiteConfig'
+import { Users } from './collections/Users'
 
 import { getAdminRoute } from '@/utilities/adminRoute'
 
@@ -34,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: '- ChaiBuilder',
+      titleSuffix: '| ChaiBuilder',
       description: 'ChaiBuilder CMS',
       icons: [
         {
@@ -73,7 +72,6 @@ export default buildConfig({
     Users,
     Blog,
     BlogCategories,
-    Legal,
     Media,
     SiteConfig,
     FormSubmissions,
@@ -97,19 +95,17 @@ export default buildConfig({
   sharp,
   plugins: [
     seoPlugin({
-      collections: ['blog', 'legal', 'site-config'],
+      collections: ['blog', 'site-config'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => doc?.title || doc?.name || '',
       generateDescription: ({ doc }) => doc?.excerpt || doc?.tagline || doc?.title || '',
       tabbedUI: true,
     }),
     chaiBuilderPlugin({
-      menus: true,
-      revalidateCollections: ['blog', 'legal'],
+      revalidateCollections: ['blog'],
       appCollections: [
         'blog',
         'blog-categories',
-        'legal',
         'media',
         'site-config',
         'form-submissions',

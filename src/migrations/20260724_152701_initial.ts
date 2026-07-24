@@ -617,75 +617,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
   await db.run(sql`CREATE INDEX \`_blog_categories_v_version_version_slug_idx\` ON \`_blog_categories_v_locales\` (\`version_slug\`,\`_locale\`);`)
   await db.run(sql`CREATE UNIQUE INDEX \`_blog_categories_v_locales_locale_parent_id_unique\` ON \`_blog_categories_v_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`legal\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`app\` text,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`_status\` text DEFAULT 'draft'
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`legal_updated_at_idx\` ON \`legal\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`legal_created_at_idx\` ON \`legal\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`legal__status_idx\` ON \`legal\` (\`_status\`);`)
-  await db.run(sql`CREATE TABLE \`legal_locales\` (
-  	\`slug\` text,
-  	\`title\` text,
-  	\`content\` text DEFAULT '{"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"","version":1}],"direction":null,"format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":null,"format":"","indent":0,"version":1}}',
-  	\`meta_title\` text,
-  	\`meta_description\` text,
-  	\`meta_image_id\` text(36),
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`meta_image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`legal\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE UNIQUE INDEX \`legal_slug_idx\` ON \`legal_locales\` (\`slug\`,\`_locale\`);`)
-  await db.run(sql`CREATE INDEX \`legal_meta_meta_image_idx\` ON \`legal_locales\` (\`meta_image_id\`,\`_locale\`);`)
-  await db.run(sql`CREATE UNIQUE INDEX \`legal_locales_locale_parent_id_unique\` ON \`legal_locales\` (\`_locale\`,\`_parent_id\`);`)
-  await db.run(sql`CREATE TABLE \`_legal_v\` (
-  	\`id\` text(36) PRIMARY KEY NOT NULL,
-  	\`parent_id\` text(36),
-  	\`version_app\` text,
-  	\`version_updated_at\` text,
-  	\`version_created_at\` text,
-  	\`version__status\` text DEFAULT 'draft',
-  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
-  	\`snapshot\` integer,
-  	\`published_locale\` text,
-  	\`latest\` integer,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`legal\`(\`id\`) ON UPDATE no action ON DELETE set null
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`_legal_v_parent_idx\` ON \`_legal_v\` (\`parent_id\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_version_version_updated_at_idx\` ON \`_legal_v\` (\`version_updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_version_version_created_at_idx\` ON \`_legal_v\` (\`version_created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_version_version__status_idx\` ON \`_legal_v\` (\`version__status\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_created_at_idx\` ON \`_legal_v\` (\`created_at\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_updated_at_idx\` ON \`_legal_v\` (\`updated_at\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_snapshot_idx\` ON \`_legal_v\` (\`snapshot\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_published_locale_idx\` ON \`_legal_v\` (\`published_locale\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_latest_idx\` ON \`_legal_v\` (\`latest\`);`)
-  await db.run(sql`CREATE TABLE \`_legal_v_locales\` (
-  	\`version_slug\` text,
-  	\`version_title\` text,
-  	\`version_content\` text DEFAULT '{"root":{"type":"root","children":[{"type":"paragraph","children":[{"type":"text","detail":0,"format":0,"mode":"normal","style":"","text":"","version":1}],"direction":null,"format":"","indent":0,"textFormat":0,"textStyle":"","version":1}],"direction":null,"format":"","indent":0,"version":1}}',
-  	\`version_meta_title\` text,
-  	\`version_meta_description\` text,
-  	\`version_meta_image_id\` text(36),
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`_locale\` text NOT NULL,
-  	\`_parent_id\` text(36) NOT NULL,
-  	FOREIGN KEY (\`version_meta_image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null,
-  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`_legal_v\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`_legal_v_version_version_slug_idx\` ON \`_legal_v_locales\` (\`version_slug\`,\`_locale\`);`)
-  await db.run(sql`CREATE INDEX \`_legal_v_version_meta_version_meta_image_idx\` ON \`_legal_v_locales\` (\`version_meta_image_id\`,\`_locale\`);`)
-  await db.run(sql`CREATE UNIQUE INDEX \`_legal_v_locales_locale_parent_id_unique\` ON \`_legal_v_locales\` (\`_locale\`,\`_parent_id\`);`)
   await db.run(sql`CREATE TABLE \`media\` (
   	\`id\` text(36) PRIMARY KEY NOT NULL,
   	\`app\` text NOT NULL,
@@ -1003,7 +934,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`users_id\` text(36),
   	\`blog_id\` text(36),
   	\`blog_categories_id\` text(36),
-  	\`legal_id\` text(36),
   	\`media_id\` text(36),
   	\`site_config_id\` text(36),
   	\`form_submissions_id\` text(36),
@@ -1012,7 +942,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	FOREIGN KEY (\`users_id\`) REFERENCES \`users\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`blog_id\`) REFERENCES \`blog\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`blog_categories_id\`) REFERENCES \`blog_categories\`(\`id\`) ON UPDATE no action ON DELETE cascade,
-  	FOREIGN KEY (\`legal_id\`) REFERENCES \`legal\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`media_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`site_config_id\`) REFERENCES \`site_config\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`form_submissions_id\`) REFERENCES \`form_submissions\`(\`id\`) ON UPDATE no action ON DELETE cascade,
@@ -1025,7 +954,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_users_id_idx\` ON \`payload_locked_documents_rels\` (\`users_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_blog_id_idx\` ON \`payload_locked_documents_rels\` (\`blog_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_blog_categories_id_idx\` ON \`payload_locked_documents_rels\` (\`blog_categories_id\`);`)
-  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_legal_id_idx\` ON \`payload_locked_documents_rels\` (\`legal_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_media_id_idx\` ON \`payload_locked_documents_rels\` (\`media_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_site_config_id_idx\` ON \`payload_locked_documents_rels\` (\`site_config_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_form_submissions_id_idx\` ON \`payload_locked_documents_rels\` (\`form_submissions_id\`);`)
@@ -1105,10 +1033,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`blog_categories_locales\`;`)
   await db.run(sql`DROP TABLE \`_blog_categories_v\`;`)
   await db.run(sql`DROP TABLE \`_blog_categories_v_locales\`;`)
-  await db.run(sql`DROP TABLE \`legal\`;`)
-  await db.run(sql`DROP TABLE \`legal_locales\`;`)
-  await db.run(sql`DROP TABLE \`_legal_v\`;`)
-  await db.run(sql`DROP TABLE \`_legal_v_locales\`;`)
   await db.run(sql`DROP TABLE \`media\`;`)
   await db.run(sql`DROP TABLE \`media_locales\`;`)
   await db.run(sql`DROP TABLE \`site_config_social_links\`;`)
