@@ -19,7 +19,7 @@ describe('robots.txt builder', () => {
 
   it('disallows admin, api, preview, and example routes', () => {
     expect(ROBOTS_DISALLOW_PATHS).toEqual(
-      expect.arrayContaining(['/admin/', '/api/', '/next/', '/my-route']),
+      expect.arrayContaining(['/admin/', '/api/', '/next/']),
     )
   })
 

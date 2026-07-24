@@ -2,6 +2,10 @@
 
 import { useCallback } from 'react'
 
+import { logoutAction } from '@/app/(builder)/admin/actions/logout'
+import { registerCustomBlocks } from '@/blocks'
+import { registerProjectFonts } from '@/fonts'
+import { adminUrl } from '@/utilities/adminRoute'
 import { defaultChaiLibrary, registerChaiLibrary } from 'chaipro'
 import { ChaiWebsiteBuilder } from 'chaipro/payload/builder'
 import { aiProClientPlugin } from 'chaipro/plugins/ai-pro/client'
@@ -10,10 +14,6 @@ import { pageErrorsClientPlugin } from 'chaipro/plugins/page-errors/client'
 import { redirectsClientPlugin } from 'chaipro/plugins/redirects/client'
 import { revisionsClientPlugin } from 'chaipro/plugins/revisions/client'
 import { trashClientPlugin } from 'chaipro/plugins/trash/client'
-import { registerProjectFonts } from '@/fonts'
-import { logoutAction } from '@/app/(builder)/admin/actions/logout'
-import { adminUrl } from '@/utilities/adminRoute'
-import { registerCustomBlocks } from '@/blocks'
 
 // Mirrors the server list in src/chaibuilder.config.ts — only these feature
 // UIs ship in the editor bundle. One import per plugin (not the
