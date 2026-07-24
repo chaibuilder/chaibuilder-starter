@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
         pathname: '/api/media/file/**',
       },
     ],
+    remotePatterns: [{
+      hostname: '*.chaibuilder.com',
+    }],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
