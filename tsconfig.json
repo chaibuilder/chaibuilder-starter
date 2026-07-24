@@ -31,9 +31,6 @@
       ],
       "@chaibuilder-config": [
         "./src/chaibuilder.config.ts"
-      ],
-      "~/payload/*": [
-        "./src/payload-bridge/*"
       ]
     },
     "target": "ES2022"
