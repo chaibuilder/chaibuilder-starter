@@ -430,6 +430,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`users_sessions_parent_id_idx\` ON \`users_sessions\` (\`_parent_id\`);`)
   await db.run(sql`CREATE TABLE \`users\` (
   	\`id\` text(36) PRIMARY KEY NOT NULL,
+  	\`first_name\` text,
+  	\`last_name\` text,
   	\`role\` text DEFAULT 'none',
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,

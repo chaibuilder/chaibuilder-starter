@@ -58,6 +58,16 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'firstName',
+      type: 'text',
+      label: 'First Name',
+    },
+    {
+      name: 'lastName',
+      type: 'text',
+      label: 'Last Name',
+    },
+    {
       name: 'role',
       type: 'select',
       options: [

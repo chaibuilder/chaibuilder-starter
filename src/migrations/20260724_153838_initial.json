@@ -3029,6 +3029,20 @@
           "notNull": true,
           "autoincrement": false
         },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "role": {
           "name": "role",
           "type": "text",
@@ -7000,6 +7014,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "8e7ac205-d6c1-4508-976c-b56671178bec",
+  "id": "17015411-10be-4111-9c84-5b83a421acb9",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
